@@ -5,7 +5,7 @@ bl_info = {
     "category": "Model Analysis",
     "author": "Riccardo Foschi and Chat GPT",
     "description": "Allows to calculate the average uncertainty weighted with the volume (AU_V) and the average uncertainty weighted with the volume and relevance (AU_VR) for hypothetical 3D architectural reconstruction models",
-    "version": (2, 0, 0),
+    "version": (2, 2, 0),
 }
 
 
@@ -251,7 +251,6 @@ class ResetColorsToDefaults(bpy.types.Operator):
         return {'FINISHED'}
 
 
-
 class AssignUncertaintyLevel(bpy.types.Operator):
     bl_idname = "object.assign_uncertainty_level"
     bl_label = "Assign Uncertainty Level"
@@ -424,7 +423,7 @@ class SelectByUncertainty(bpy.types.Operator):
 
 
 
-class UncertaintyPanel(bpy.types.Panel):
+class Assign(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_category = 'Uncertainty'
@@ -440,12 +439,7 @@ class UncertaintyPanel(bpy.types.Panel):
         # Create Box 1
         box1 = layout.box()
         box1.label(text="Assign Uncertainty level") 
- 
-        row = box1.row(align=True)        
-        row.operator("object.reset_colors_to_defaults", text="Set default colours")
-
-        row = box1.row() 
-        
+    
         
         #1
         row = box1.row(align=True)
@@ -509,10 +503,8 @@ class UncertaintyPanel(bpy.types.Panel):
         sub = row.row()
         sub.scale_x = 2.0
         sub.operator("object.assign_uncertainty_level", text="Assign Uncertainty 7").level = 7 
-        #end
-        
-        row = box1.row()  
-        
+        #end 
+   
              
         #8
         row = box1.row(align=True)
@@ -520,8 +512,21 @@ class UncertaintyPanel(bpy.types.Panel):
         row.prop(color_props8, "color", text="")
         sub = row.row()
         sub.scale_x = 2.0
-        sub.operator("object.reset_uncertainty_level", text="Abstention/Reset")
-        #end        
+        sub.operator("object.reset_uncertainty_level", text="Abstention")
+        #end  
+        
+        
+              
+        row = box1.row() 
+        
+        
+        
+        row = box1.row(align=True)        
+        row.operator("object.reset_colors_to_defaults", text="Reset default colours")
+
+
+
+
         
 
         # Create Box 2
@@ -600,12 +605,14 @@ class Select(bpy.types.Panel):
 
 
 
+def on_load(dummy):
+    # Code to run when a Blender file is loaded
+    bpy.ops.object.my_operator()
 
 
 
 def register():
-    
-    #bpy.utils.register_class(Assign)
+    bpy.utils.register_class(Assign)
     bpy.utils.register_class(Calculate)
     bpy.utils.register_class(Select)
     
@@ -618,14 +625,13 @@ def register():
     bpy.types.Scene.ColorProperties6 = bpy.props.PointerProperty(type=ColorProperties)
     bpy.types.Scene.ColorProperties7 = bpy.props.PointerProperty(type=ColorProperties)
     bpy.types.Scene.ColorProperties8 = bpy.props.PointerProperty(type=ColorProperties)
-    bpy.utils.register_class(UncertaintyPanel)
     bpy.utils.register_class(AssignUncertaintyLevel)
     bpy.utils.register_class(ResetUncertaintyLevel)
     bpy.utils.register_class(AssignRelevance)
     bpy.utils.register_class(ResetRelevance)
-    
+ 
     bpy.utils.register_class(ApplyScaleSelection)
-    
+        
     bpy.utils.register_class(CalculateVolume)
     bpy.utils.register_class(ResetVolume)
     bpy.utils.register_class(CalculateAUV)
@@ -650,10 +656,14 @@ def register():
         description="Result of AU_VR Calculation",
         default="%"
     )
+    
+    
+    
+    # Execute code when the addon is activated
+    bpy.ops.object.reset_colors_to_defaults()
 
 def unregister():
-    
-    #bpy.utils.register_class(Assign)
+    bpy.utils.register_class(Assign)
     bpy.utils.register_class(Calculate)
     bpy.utils.register_class(Select)    
     
@@ -666,15 +676,12 @@ def unregister():
     del bpy.types.Scene.ColorProperties6         
     del bpy.types.Scene.ColorProperties7        
     del bpy.types.Scene.ColorProperties8
-    bpy.utils.unregister_class(UncertaintyPanel)
     bpy.utils.unregister_class(AssignUncertaintyLevel)
     bpy.utils.unregister_class(ResetUncertaintyLevel)
     bpy.utils.unregister_class(AssignRelevance)
     bpy.utils.unregister_class(ResetRelevance)
-    
-    
-    bpy.utils.unregister_class(ApplyScaleSelection) 
         
+    bpy.utils.unregister_class(ApplyScaleSelection) 
         
     bpy.utils.unregister_class(CalculateVolume)
     bpy.utils.unregister_class(ResetVolume)
@@ -685,6 +692,11 @@ def unregister():
     del bpy.types.Scene.relevance_factor
     del bpy.types.Scene.au_v_result
     del bpy.types.Scene.au_vr_result
+
+
+
+
+
 
 if __name__ == "__main__":
     register()
