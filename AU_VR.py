@@ -16,7 +16,7 @@ from bpy.props import FloatVectorProperty
 from bpy.types import Panel, PropertyGroup
 
 
-#region Color  
+#region Color
 
 class ResetColorsToDefaults(bpy.types.Operator):
     bl_idname = "object.reset_colors_to_defaults"
@@ -73,7 +73,7 @@ class SimpleOperator1(bpy.types.Operator):
                     obj.data.materials.append(mat)
             assign_uncertainty_level(1)                
         return {'FINISHED'}
- 
+
 class SimpleOperator2(bpy.types.Operator):
     bl_idname = "object.apply_material2"
     bl_label = "Apply Material 2"
@@ -102,7 +102,7 @@ class SimpleOperator2(bpy.types.Operator):
                     obj.data.materials.append(mat)
             assign_uncertainty_level(2)        
         return {'FINISHED'}
-  
+
 class SimpleOperator3(bpy.types.Operator):
     bl_idname = "object.apply_material3"
     bl_label = "Apply Material 3"
@@ -159,7 +159,7 @@ class SimpleOperator4(bpy.types.Operator):
                     obj.data.materials.append(mat)
             assign_uncertainty_level(4)          
         return {'FINISHED'}
-   
+
 class SimpleOperator5(bpy.types.Operator):
     bl_idname = "object.apply_material5"
     bl_label = "Apply Material 5"
@@ -216,7 +216,7 @@ class SimpleOperator6(bpy.types.Operator):
                     obj.data.materials.append(mat)
             assign_uncertainty_level(6)          
         return {'FINISHED'}
-    
+
 class SimpleOperator7(bpy.types.Operator):
     bl_idname = "object.apply_material7"
     bl_label = "Apply Material 7"
@@ -343,11 +343,11 @@ class ColorProperties(bpy.types.PropertyGroup):
         update=update_material,
         description="Choose a color"
     ) 
-   
+
 def execute_reset_colors():
     bpy.ops.object.reset_colors_to_defaults()
     return None  # Stop the timer 
-        
+
 def update_material(self, context):
     color1 = self.color1
     color2 = self.color2
@@ -441,12 +441,12 @@ def reset_uncertainty_level():
             if "Uncertainty Percentage" in obj:
                 del obj["Uncertainty Percentage"]
     bpy.context.view_layer.update() 
-    
-#endregion  
+
+#endregion
 
 
 #region Relevance
-  
+
 class AssignRelevance(bpy.types.Operator):
     bl_idname = "object.assign_relevance"
     bl_label = "Assign Relevance"
@@ -483,9 +483,9 @@ def reset_relevance_factor():
 
 #endregion
 
- 
+
 #region Calculate volume
- 
+
 class ApplyScaleSelection(bpy.types.Operator):
     bl_idname = "object.apply_scale_selection"
     bl_label = "Apply Scale of Selection"
@@ -524,7 +524,7 @@ class ResetVolume(bpy.types.Operator):
             
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
-   
+
 def apply_scale_selection(self): 
     if bpy.context.selected_objects:
         bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
@@ -552,7 +552,6 @@ def reset_volume():
 
 #endregion
 
- 
 #region Calculate AU_V and AU_VR
    
 #def calculate AU_V and AU_VR
@@ -621,15 +620,14 @@ def calculate_average_uncertainty_with_relevance(self):
                 relevance_factor = obj.get("Relevance", 1)
                 weighted_sum += volume * uncertainty_percentage * relevance_factor
                 total_volume += volume * relevance_factor
-            
-
+                
     if total_volume == 0:
         return 0
 
     au_vr = weighted_sum / total_volume
     return au_vr
 
-#endregion     
+#endregion
 
 
 #region Select
@@ -647,9 +645,8 @@ class SelectByUncertainty(bpy.types.Operator):
                 obj.select_set(True)
         return {'FINISHED'}
 
-#endregion   
-   
-    
+#endregion
+
 #region Draw assign panel
 
 class Assign(bpy.types.Panel):
@@ -732,7 +729,7 @@ class Assign(bpy.types.Panel):
         row = box2.row()
         row.operator("object.reset_relevance", text="Remove Relevance from Selection")
 
-#endregion   
+#endregion
 
 
 #region Draw calculate panel
@@ -774,7 +771,7 @@ class Calculate(bpy.types.Panel):
         row.operator("object.calculate_au_vr", text="Calculate AU_VR")
         row.prop(context.scene, "au_vr_result", text="AU_VR")
 
-#endregion  
+#endregion
 
 
 #region Draw select panel
@@ -845,13 +842,13 @@ def register():
 #################### relevance end ####################
     
     
-#################### volume start ####################     
+#################### volume start ####################
     bpy.utils.register_class(ApplyScaleSelection)
     bpy.utils.register_class(CalculateVolume)
     bpy.utils.register_class(ResetVolume)    
-#################### volume end ####################     
+#################### volume end ####################
 
-#################### AU_V e AU_VR START #################### 
+#################### AU_V e AU_VR START ####################
     bpy.utils.register_class(CalculateAUV)
     bpy.utils.register_class(CalculateAUVR)
     bpy.types.Scene.au_v_result = bpy.props.StringProperty(
@@ -864,12 +861,12 @@ def register():
         description="Result of AU_VR Calculation",
         default="%"
     )
-####################  AU_V e AU_VR END ####################  
+####################  AU_V e AU_VR END ####################
 
 
-####################  SELECT BY UNCERTAINTY START ####################     
+####################  SELECT BY UNCERTAINTY START ####################
     bpy.utils.register_class(SelectByUncertainty)
-####################  SELECT BY UNCERTAINTY END ####################     
+####################  SELECT BY UNCERTAINTY END ####################
        
 def unregister():
     
@@ -904,27 +901,27 @@ def unregister():
     bpy.utils.unregister_class(AssignRelevance)
     bpy.utils.unregister_class(ResetRelevance)
     del bpy.types.Scene.relevance_factor
-#################### relevance end ####################  
+#################### relevance end ####################
     
       
-#################### volume start ####################      
+#################### volume start ####################
     bpy.utils.unregister_class(ApplyScaleSelection)  
     bpy.utils.unregister_class(CalculateVolume)
     bpy.utils.unregister_class(ResetVolume)    
-#################### volume end ####################   
+#################### volume end ####################
     
     
-#################### AU_V e AU_VR START ####################     
+#################### AU_V e AU_VR START ####################
     bpy.utils.unregister_class(CalculateAUV)
     bpy.utils.unregister_class(CalculateAUVR)
     del bpy.types.Scene.au_v_result
     del bpy.types.Scene.au_vr_result
-####################  AU_V e AU_VR END ####################     
+####################  AU_V e AU_VR END ####################
 
 
-####################  SELECT BY UNCERTAINTY START ####################     
+####################  SELECT BY UNCERTAINTY START ####################
     bpy.utils.unregister_class(SelectByUncertainty)
-####################  SELECT BY UNCERTAINTY END ####################     
+####################  SELECT BY UNCERTAINTY END ####################
           
 if __name__ == "__main__":
     register()
