@@ -5,7 +5,7 @@ bl_info = {
     "category": "Model Analysis",
     "author": "Riccardo Foschi and Chat GPT",
     "description": "Allows to calculate the average uncertainty weighted with the volume (AU_V) and the average uncertainty weighted with the volume and relevance (AU_VR) for hypothetical 3D architectural reconstruction models",
-    "version": (2, 2, 0),
+    "version": (2, 2, 2),
 }
 
 
@@ -29,6 +29,34 @@ class ColorProperties(PropertyGroup):
 
 
 
+
+#def CreateMaterial(self, context):
+#    obj = context.active_object
+#    if obj is None or obj.type != 'MESH':
+#        self.report({'WARNING'}, "No mesh object selected")
+#        return {'CANCELLED'}
+#    else:    
+#        mat = bpy.data.materials.get(self.material_name)
+#        if mat is None:
+#            mat = bpy.data.materials.new(name=self.material_name)
+#        
+#        mat.use_nodes = True
+#        mat.use_fake_user = False
+#        bsdf = mat.node_tree.nodes.get("Principled BSDF")
+#        if bsdf is None:
+#            bsdf = mat.node_tree.nodes.new(type="ShaderNodeBsdfPrincipled")
+#        bsdf.inputs["Base Color"].default_value = self.material_color
+#        bsdf.inputs["Roughness"].default_value = 1.0
+#        
+#        if obj.data.materials:
+#            obj.data.materials[0] = mat
+#        else:
+#            obj.data.materials.append(mat)
+#        
+#        return {'FINISHED'}
+
+
+
 # Funzione per aggiornare il materiale
 def update_material(obj, color):
     mat_name = "Uncertainty_{}".format(color)
@@ -40,7 +68,7 @@ def update_material(obj, color):
         bsdf = mat.node_tree.nodes.get('Principled BSDF')
         bsdf.inputs['Base Color'].default_value = color
         bsdf.inputs['Roughness'].default_value = 1.0
-        mat.use_fake_user = True
+        mat.use_fake_user = False
 
     if len(obj.material_slots) == 0:
         bpy.ops.object.material_slot_add()
@@ -60,15 +88,12 @@ def assign_uncertainty_level(level, color):
 
     for obj in bpy.context.selected_objects:
         if obj.type == 'MESH':
-            if level == 8:
-                reset_uncertainty_level()
-            else:
-                obj["Uncertainty Level"] = level
-                obj["Uncertainty Percentage"] = percentage_map[level]
-                update_material(obj, color)
+            obj["Uncertainty Level"] = level
+            obj["Uncertainty Percentage"] = percentage_map[level]
+            update_material(obj, color)
             
             # Crea un nuovo materiale
-            mat = bpy.data.materials.new(name="TestMaterial")
+            mat = bpy.data.materials.new("Uncertainty"+str(level))
             mat.use_nodes = True
             bsdf = mat.node_tree.nodes.get("Principled BSDF")
             if bsdf:
@@ -110,20 +135,26 @@ def reset_relevance_factor():
     
 #def concerning Volume    
     
-def apply_scale_selection():
-    for obj in bpy.context.selected_objects:
+def apply_scale_selection(self):
+    
+    if bpy.context.selected_objects:
         bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-    bpy.context.view_layer.update()
-    return {'Scale applied'}
+        self.report({'INFO'}, "Scale correctly applied")
+                     
+    else:
+        self.report({'ERROR'}, "No object selected")
+    return
 
-def calculate_volume(obj):
+def calculate_volume(obj, self):
     bm = bmesh.new()
     bm.from_mesh(obj.data)
     volume = bm.calc_volume(signed=True)
     bm.free()
     obj["Volume"] = volume
     bpy.context.view_layer.update()
-    return volume
+    self.report({'INFO'}, "Volume correctly calculated")
+    return
+
 
 def reset_volume():
     for obj in bpy.context.selected_objects:
@@ -136,7 +167,7 @@ def reset_volume():
     
     
     
-#Def calculate AU_V and AU_VR
+#def calculate AU_V and AU_VR
 
 def calculate_average_uncertainty(self):
     total_volume = 0
@@ -145,7 +176,8 @@ def calculate_average_uncertainty(self):
     for obj in bpy.data.objects:
 
         if obj.type == 'MESH':
-            if "Volume" not in obj:
+            
+            if "Uncertainty Level" in obj and "Volume" not in obj:
                 self.report({'ERROR'}, "Calculate volume of all objects first")
                 au_v = 0
                 return au_v
@@ -170,7 +202,7 @@ def calculate_average_uncertainty_with_relevance(self):
     for obj in bpy.data.objects:
 
         if obj.type == 'MESH':
-            if "Volume" not in obj:
+            if "Uncertainty Level" in obj and "Volume" not in obj:
                 self.report({'ERROR'}, "Calculate volume of all objects first")
                 au_vr = 0
                 return au_vr
@@ -188,22 +220,6 @@ def calculate_average_uncertainty_with_relevance(self):
 
     au_vr = weighted_sum / total_volume
     return au_vr
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -323,10 +339,10 @@ class ResetRelevance(bpy.types.Operator):
     
 class ApplyScaleSelection(bpy.types.Operator):
     bl_idname = "object.apply_scale_selection"
-    bl_label = "Apply Scale to Selection"
+    bl_label = "Apply Scale of Selection"
 
     def execute(self, context):
-        apply_scale_selection()
+        apply_scale_selection(self)
         
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
@@ -338,22 +354,31 @@ class CalculateVolume(bpy.types.Operator):
     bl_label = "Calculate Volume of selection"
 
     def execute(self, context):
-        for obj in bpy.context.selected_objects:
-            if obj.type == 'MESH':
-                calculate_volume(obj)
-        
+        if bpy.context.selected_objects:     
+            for obj in bpy.context.selected_objects:
+                if obj.type == 'MESH':
+                    calculate_volume(obj, self)           
+        else:
+            self.report({'ERROR'}, "No object selected")
+                
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
     
+    
 
+        
 
 class ResetVolume(bpy.types.Operator):
     bl_idname = "object.reset_volume"
     bl_label = "Reset Volume"
 
     def execute(self, context):
-        reset_volume()
+        if bpy.context.selected_objects:  
+            reset_volume()
         
+        else:            
+            self.report({'ERROR'}, "No object selected")
+            
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
     
@@ -559,12 +584,12 @@ class Calculate(bpy.types.Panel):
         box1.label(text="Calculate Volume")
 
         row = box1.column()
-        row.operator("object.apply_scale_selection", text="Apply Scale to Selection")
+        row.operator("object.apply_scale_selection", text="Apply Scale")
 
-        row.operator("object.calculate_volume", text="Calculate Volume of selection")
+        row.operator("object.calculate_volume", text="Calculate Volume ")
 
         row = box1.column()
-        row.operator("object.reset_volume", text="Remove Volume from selection")     
+        row.operator("object.reset_volume", text="Remove Volume Property")     
         
         
         # Create Box 2
@@ -658,6 +683,9 @@ def register():
     )
     
     
+    # Register the load handler
+    if on_load not in bpy.app.handlers.load_post:
+        bpy.app.handlers.load_post.append(on_load)
     
     # Execute code when the addon is activated
     bpy.ops.object.reset_colors_to_defaults()
@@ -693,7 +721,9 @@ def unregister():
     del bpy.types.Scene.au_v_result
     del bpy.types.Scene.au_vr_result
 
-
+    # Unregister the load handler
+    if on_load in bpy.app.handlers.load_post:
+        bpy.app.handlers.load_post.remove(on_load)
 
 
 
