@@ -5,7 +5,7 @@ bl_info = {
     "category": "Model Analysis",
     "author": "Riccardo Foschi and Chat GPT",
     "description": "Allows to calculate the average uncertainty weighted with the volume (AU_V) and the average uncertainty weighted with the volume and relevance (AU_VR) for hypothetical 3D architectural reconstruction models",
-    "version": (1, 8, 0),
+    "version": (1, 9, 2),
 }
 
 
@@ -194,8 +194,9 @@ def calculate_average_uncertainty(self):
 
         if obj.type == 'MESH':
             if "Volume" not in obj:
-                self.report({'ERROR'}, "Calculate Volume of all objects first")
-                break
+                self.report({'ERROR'}, "Calculate volume of all objects first")
+                au_v = 0
+                return au_v
 
             elif "Uncertainty Level" in obj and "Volume" in obj:
                 volume = obj["Volume"]
@@ -203,12 +204,14 @@ def calculate_average_uncertainty(self):
                 weighted_sum += volume * uncertainty_percentage
                 total_volume += volume
 
-
     if total_volume == 0:
         return 0
 
     au_v = weighted_sum / total_volume
     return au_v
+
+
+
 
 def calculate_average_uncertainty_with_relevance(self):
     total_volume = 0
@@ -219,15 +222,17 @@ def calculate_average_uncertainty_with_relevance(self):
 
         if obj.type == 'MESH':
             if "Volume" not in obj:
-                self.report({'ERROR'}, "Calculate Volume of all objects first")
-                break
+                self.report({'ERROR'}, "Calculate volume of all objects first")
+                au_vr = 0
+                return au_vr
             
-            elif "Uncertainty Level" in obj and "Volume" in obj:
+            elif "Uncertainty Level" in obj and "Volume" in obj: 
                 volume = obj["Volume"]
                 uncertainty_percentage = obj["Uncertainty Percentage"]
                 relevance_factor = obj.get("Relevance", 1)
                 weighted_sum += volume * uncertainty_percentage * relevance_factor
                 total_volume += volume * relevance_factor
+            
 
     if total_volume == 0:
         return 0
