@@ -5,7 +5,7 @@ bl_info = {
     "category": "Model Analysis",
     "author": "Riccardo Foschi and Chat GPT",
     "description": "Allows to calculate the average uncertainty weighted with the volume (AU_V) and the average uncertainty weighted with the volume and relevance (AU_VR) for hypothetical 3D architectural reconstruction models",
-    "version": (1, 8, 0),
+    "version": (1, 9, 0),
 }
 
 
@@ -371,8 +371,9 @@ class Assign(bpy.types.Panel):
         
         # Create Box 1
         box1 = layout.box()
-        box1.label(text="Assign Uncertainty level!!2")
-                       
+        box1.label(text="Assign Uncertainty level")
+
+                 
         row = box1.row(align=True)
         row.prop(scene.color_props, "color1", text="")
         sub = row.row()
@@ -418,23 +419,28 @@ class Assign(bpy.types.Panel):
         sub.scale_x = 2.0
         sub.operator("object.assign_uncertainty_level", text="Assign Uncertainty 7").level = 7               
             
-
+        row = box1.row()
+        
         row = box1.row(align=True)
         row.prop(scene.color_props, "color8", text="")
         sub = row.row()
         sub.scale_x = 2.0
-        sub.operator("object.reset_uncertainty_level", text="Reset / Abstention") 
+        sub.operator("object.reset_uncertainty_level", text="Abstention") 
+
 
         # Create Box 2
         box2 = layout.box()
         box2.label(text="Assign Relevance Factor")
         
-        row = box2.column()
+        row = box2.row(align=True)
         row.prop(context.scene, "relevance_factor", text="")
-        row.operator("object.assign_relevance", text="Assign Relevance")
-        
+        sub = row.row()
+        sub.scale_x = 1.5
+        sub.operator("object.assign_relevance", text="Assign Relevance") 
+                        
         row = box2.row()
-        row.operator("object.reset_relevance", text="Reset Relevance")
+        row.operator("object.reset_relevance", text="Remove Relevance from Selection")
+
         
         
         
@@ -449,19 +455,22 @@ class Calculate(bpy.types.Panel):
         layout = self.layout
         scene = context.scene   
         
+        
+        
         # Create Box 1
         box1 = layout.box()
         box1.label(text="Calculate Volume")
 
-
         row = box1.column()
-        row.operator("object.apply_scale_selection", text="Apply Scale of Selection")
+        row.operator("object.apply_scale_selection", text="Apply Scale to Selection")
 
         row.operator("object.calculate_volume", text="Calculate Volume of selection")
 
         row = box1.column()
-        row.operator("object.reset_volume", text="Reset Volume")
-
+        row.operator("object.reset_volume", text="Remove Volume from selection")
+        
+        
+        
 
 
         # Create Box 2
