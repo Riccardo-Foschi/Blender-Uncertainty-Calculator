@@ -8,9 +8,6 @@ bl_info = {
     "version": (2, 2, 5),
 }
 
-
-
-
 import bpy
 import bmesh
 from bpy.props import FloatVectorProperty
@@ -19,8 +16,7 @@ from bpy.props import FloatVectorProperty
 from bpy.types import Panel, PropertyGroup
 
 
-########################## Colour start #############################    
-
+#region Color  
 
 class ResetColorsToDefaults(bpy.types.Operator):
     bl_idname = "object.reset_colors_to_defaults"
@@ -49,10 +45,7 @@ class ResetColorsToDefaults(bpy.types.Operator):
         context.scene.my_tool.color8 = color_map[8]
         
         return {'FINISHED'}
-
-
-
-
+        
 def update_material(self, context):
     color1 = self.color1
     color2 = self.color2
@@ -119,7 +112,6 @@ def update_material(self, context):
         bsdf8.inputs['Base Color'].default_value = (color8[0], color8[1], color8[2], 1)
         bsdf8.inputs['Roughness'].default_value = 1.0
 
-
 def assign_uncertainty_level(level):            
     percentage_map = {
     1: 7.143,
@@ -146,8 +138,7 @@ def reset_uncertainty_level():
                 del obj["Uncertainty Level"]
             if "Uncertainty Percentage" in obj:
                 del obj["Uncertainty Percentage"]
-    bpy.context.view_layer.update()
-    
+    bpy.context.view_layer.update() 
 
 class SimpleOperator1(bpy.types.Operator):
     bl_idname = "object.apply_material1"
@@ -176,9 +167,7 @@ class SimpleOperator1(bpy.types.Operator):
                     obj.data.materials.append(mat)
             assign_uncertainty_level(1)                
         return {'FINISHED'}
-                    
-
-    
+ 
 class SimpleOperator2(bpy.types.Operator):
     bl_idname = "object.apply_material2"
     bl_label = "Apply Material 2"
@@ -207,7 +196,7 @@ class SimpleOperator2(bpy.types.Operator):
                     obj.data.materials.append(mat)
             assign_uncertainty_level(2)        
         return {'FINISHED'}
-    
+  
 class SimpleOperator3(bpy.types.Operator):
     bl_idname = "object.apply_material3"
     bl_label = "Apply Material 3"
@@ -264,9 +253,7 @@ class SimpleOperator4(bpy.types.Operator):
                     obj.data.materials.append(mat)
             assign_uncertainty_level(4)          
         return {'FINISHED'}
-    
-    
-    
+   
 class SimpleOperator5(bpy.types.Operator):
     bl_idname = "object.apply_material5"
     bl_label = "Apply Material 5"
@@ -380,21 +367,6 @@ class SimpleOperator8(bpy.types.Operator):
                     obj.data.materials.append(mat)
             reset_uncertainty_level()          
         return {'FINISHED'}
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 class ColorProperties(bpy.types.PropertyGroup):
     color1: FloatVectorProperty(
@@ -465,16 +437,15 @@ class ColorProperties(bpy.types.PropertyGroup):
         update=update_material,
         description="Choose a color"
     ) 
-    
+   
 def execute_reset_colors():
     bpy.ops.object.reset_colors_to_defaults()
     return None  # Stop the timer 
         
-########################## Colour end #############################    
+#endregion  
 
 
-
-########################## Relevance start #############################
+#region Relevance
  
 def assign_relevance_factor(factor):
     for obj in bpy.context.selected_objects:
@@ -500,7 +471,6 @@ class AssignRelevance(bpy.types.Operator):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
 
-
 class ResetRelevance(bpy.types.Operator):
     bl_idname = "object.reset_relevance"
     bl_label = "Reset Relevance"
@@ -511,11 +481,11 @@ class ResetRelevance(bpy.types.Operator):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
    
-########################## Relevance end #############################  
+#endregion
+
+ 
+#region Calculate volume
    
-   
-   
-########################## Calculate volume start #############################   
 def apply_scale_selection(self): 
     if bpy.context.selected_objects:
         bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
@@ -540,10 +510,7 @@ def reset_volume():
             if "Volume" in obj:
                 del obj["Volume"]
     bpy.context.view_layer.update()
-    
-
-
-    
+  
 class ApplyScaleSelection(bpy.types.Operator):
     bl_idname = "object.apply_scale_selection"
     bl_label = "Apply Scale of Selection"
@@ -582,11 +549,12 @@ class ResetVolume(bpy.types.Operator):
             
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
-########################## Calculate volume end #############################      
+
+#endregion
+
+ 
+#region Calculate AU_V and AU_VR
    
-   
-   
-########################## Calculate AU_V and AU_VR START #############################     
 #def calculate AU_V and AU_VR
 
 def calculate_average_uncertainty(self):
@@ -612,7 +580,6 @@ def calculate_average_uncertainty(self):
 
     au_v = weighted_sum / total_volume
     return au_v
-
 
 def calculate_average_uncertainty_with_relevance(self):
     total_volume = 0
@@ -640,8 +607,6 @@ def calculate_average_uncertainty_with_relevance(self):
     au_vr = weighted_sum / total_volume
     return au_vr
 
-
-
 class CalculateAUV(bpy.types.Operator):
     bl_idname = "object.calculate_au_v"
     bl_label = "Calculate AU_V"
@@ -652,8 +617,6 @@ class CalculateAUV(bpy.types.Operator):
 
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
-    
-    
 
 class CalculateAUVR(bpy.types.Operator):
     bl_idname = "object.calculate_au_vr"
@@ -665,10 +628,11 @@ class CalculateAUVR(bpy.types.Operator):
         
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'} 
-########################## Calculate AU_V and AU_VR END #############################      
+
+#endregion     
 
 
-########################## Select START #############################
+#region Select
 
 class SelectByUncertainty(bpy.types.Operator):
     bl_idname = "object.select_by_uncertainty"
@@ -683,10 +647,11 @@ class SelectByUncertainty(bpy.types.Operator):
                 obj.select_set(True)
         return {'FINISHED'}
 
-########################## Select END #############################   
+#endregion   
    
     
-########################## DRAW ASSIGN PANEL START #############################      
+#region Draw assign panel
+
 class Assign(bpy.types.Panel):
     bl_label = "Assign"
     bl_idname = "OBJECT_PT_test"
@@ -699,85 +664,62 @@ class Assign(bpy.types.Panel):
         scene = context.scene
         mytool = scene.my_tool
 
-        # Create Box 1
         box1 = layout.box()
         box1.label(text="Assign Uncertainty level") 
 
-            
-        #1
         row = box1.row(align=True)
         row.prop(mytool, "color1", text="")
         sub = row.row()
         sub.scale_x = 2.0
         sub.operator("object.apply_material1", text="Uncertainty 1")
-        #end   
-        
-        #2
+
         row = box1.row(align=True)
         row.prop(mytool, "color2", text="")
         sub = row.row()
         sub.scale_x = 2.0
         sub.operator("object.apply_material2", text="Uncertainty 2")
-        #end   
-        
-        #3
+
         row = box1.row(align=True)
         row.prop(mytool, "color3", text="")
         sub = row.row()
         sub.scale_x = 2.0
         sub.operator("object.apply_material3", text="Uncertainty 3")
-        #end  
-         
-        #4
+
         row = box1.row(align=True)
         row.prop(mytool, "color4", text="")
         sub = row.row()
         sub.scale_x = 2.0
         sub.operator("object.apply_material4", text="Uncertainty 4")
-        #end 
-         
-        #5
+
         row = box1.row(align=True)
         row.prop(mytool, "color5", text="")
         sub = row.row()
         sub.scale_x = 2.0
         sub.operator("object.apply_material5", text="Uncertainty 5")
-        #end  
-         
-        #6
+
         row = box1.row(align=True)
         row.prop(mytool, "color6", text="")
         sub = row.row()
         sub.scale_x = 2.0
         sub.operator("object.apply_material6", text="Uncertainty 6")
-        #end   
-    
-        #7
+
         row = box1.row(align=True)
         row.prop(mytool, "color7", text="")
         sub = row.row()
         sub.scale_x = 2.0
         sub.operator("object.apply_material7", text="Uncertainty 7")
-        #end  
-         
-        #8
+
         row = box1.row(align=True)
         row.prop(mytool, "color8", text="")
         sub = row.row()
         sub.scale_x = 2.0
-        sub.operator("object.apply_material8", text="Abstention")
-        #end   
+        sub.operator("object.apply_material8", text="Abstention")  
         
-        row = box1.row() 
-        
-        
+        row = box1.row()
         
         row = box1.row(align=True)        
         row.operator("object.reset_colors_to_defaults", text="Reset default colours")  
-        
-        
-        
-        # Create Box 2
+
         box2 = layout.box()
         box2.label(text="Assign Relevance Factor")
         
@@ -789,9 +731,11 @@ class Assign(bpy.types.Panel):
                         
         row = box2.row()
         row.operator("object.reset_relevance", text="Remove Relevance from Selection")
-########################## DRAW ASSIGN PANEL END #############################   
 
-########################## DRAW CALCULATE PANEL START #############################   
+#endregion   
+
+
+#region Draw calculate panel
 class Calculate(bpy.types.Panel):
     bl_label = "Calculate"
     bl_space_type = 'VIEW_3D'
@@ -828,9 +772,12 @@ class Calculate(bpy.types.Panel):
         row = box2.column()
         row.operator("object.calculate_au_vr", text="Calculate AU_VR")
         row.prop(context.scene, "au_vr_result", text="AU_VR")
-########################## DRAW CALCULATE PANEL END #############################   
 
-########################## DRAW SELECT PANEL START #############################   
+#endregion  
+
+
+#region Draw select panel
+  
 class Select(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -850,7 +797,9 @@ class Select(bpy.types.Panel):
         for i in range(1, 8):
 
             row.operator("object.select_by_uncertainty", text=str(i)).level = i
-########################## DRAW SELECT PANEL END ############################# 
+
+#endregion
+ 
 
 def register():
     
@@ -920,8 +869,6 @@ def register():
 ####################  SELECT BY UNCERTAINTY START ####################     
     bpy.utils.register_class(SelectByUncertainty)
 ####################  SELECT BY UNCERTAINTY END ####################     
-
-
        
 def unregister():
     
