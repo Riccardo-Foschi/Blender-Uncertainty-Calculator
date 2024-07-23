@@ -5,7 +5,7 @@ bl_info = {
     "category": "Model Analysis",
     "author": "Riccardo Foschi and Chat GPT",
     "description": "Allows to calculate the average uncertainty weighted with the volume (AU_V) and the average uncertainty weighted with the volume and relevance (AU_VR) for hypothetical 3D architectural reconstruction models",
-    "version": (1, 9, 0),
+    "version": (1, 8, 0),
 }
 
 
@@ -186,16 +186,23 @@ def reset_volume():
     
     
 
-def calculate_average_uncertainty():
+def calculate_average_uncertainty(self):
     total_volume = 0
     weighted_sum = 0
 
     for obj in bpy.data.objects:
-        if "Uncertainty Level" in obj and "Volume" in obj:
-            volume = obj["Volume"]
-            uncertainty_percentage = obj["Uncertainty Percentage"]
-            weighted_sum += volume * uncertainty_percentage
-            total_volume += volume
+
+        if obj.type == 'MESH':
+            if "Volume" not in obj:
+                self.report({'ERROR'}, "Calculate Volume of all objects first")
+                break
+
+            elif "Uncertainty Level" in obj and "Volume" in obj:
+                volume = obj["Volume"]
+                uncertainty_percentage = obj["Uncertainty Percentage"]
+                weighted_sum += volume * uncertainty_percentage
+                total_volume += volume
+
 
     if total_volume == 0:
         return 0
@@ -203,17 +210,24 @@ def calculate_average_uncertainty():
     au_v = weighted_sum / total_volume
     return au_v
 
-def calculate_average_uncertainty_with_relevance():
+def calculate_average_uncertainty_with_relevance(self):
     total_volume = 0
     weighted_sum = 0
 
+
     for obj in bpy.data.objects:
-        if "Uncertainty Level" in obj and "Volume" in obj:
-            volume = obj["Volume"]
-            uncertainty_percentage = obj["Uncertainty Percentage"]
-            relevance_factor = obj.get("Relevance", 1)
-            weighted_sum += volume * uncertainty_percentage * relevance_factor
-            total_volume += volume * relevance_factor
+
+        if obj.type == 'MESH':
+            if "Volume" not in obj:
+                self.report({'ERROR'}, "Calculate Volume of all objects first")
+                break
+            
+            elif "Uncertainty Level" in obj and "Volume" in obj:
+                volume = obj["Volume"]
+                uncertainty_percentage = obj["Uncertainty Percentage"]
+                relevance_factor = obj.get("Relevance", 1)
+                weighted_sum += volume * uncertainty_percentage * relevance_factor
+                total_volume += volume * relevance_factor
 
     if total_volume == 0:
         return 0
@@ -316,10 +330,10 @@ class CalculateAUV(bpy.types.Operator):
     bl_idname = "object.calculate_au_v"
     bl_label = "Calculate AU_V"
 
-    def execute(self, context):
-        au_v = calculate_average_uncertainty()
+    def execute(self, context):    
+        au_v = calculate_average_uncertainty(self)
         context.scene.au_v_result = f"{au_v:.2f}%"
-        
+
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
 
@@ -328,7 +342,7 @@ class CalculateAUVR(bpy.types.Operator):
     bl_label = "Calculate AU_VR"
 
     def execute(self, context):
-        au_vr = calculate_average_uncertainty_with_relevance()
+        au_vr = calculate_average_uncertainty_with_relevance(self)
         context.scene.au_vr_result = f"{au_vr:.2f}%"
         
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
