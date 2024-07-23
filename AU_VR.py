@@ -45,100 +45,6 @@ class ResetColorsToDefaults(bpy.types.Operator):
         context.scene.my_tool.color8 = color_map[8]
         
         return {'FINISHED'}
-        
-def update_material(self, context):
-    color1 = self.color1
-    color2 = self.color2
-    color3 = self.color3
-    color4 = self.color4
-    color5 = self.color5
-    color6 = self.color6
-    color7 = self.color7
-    color8 = self.color8
-
-    # Controlla se esiste già un materiale chiamato "CustomMaterial1"
-    mat1 = bpy.data.materials.get("CustomMaterial1")
-    bsdf1 = mat1.node_tree.nodes.get("Principled BSDF")
-    if bsdf1:
-        bsdf1.inputs['Base Color'].default_value = (color1[0], color1[1], color1[2], 1)
-        bsdf1.inputs['Roughness'].default_value = 1.0
-
-    # Controlla se esiste già un materiale chiamato "CustomMaterial2"
-    mat2 = bpy.data.materials.get("CustomMaterial2")
-    bsdf2 = mat2.node_tree.nodes.get("Principled BSDF")
-    if bsdf2:
-        bsdf2.inputs['Base Color'].default_value = (color2[0], color2[1], color2[2], 1)
-        bsdf2.inputs['Roughness'].default_value = 1.0
-
-    # Controlla se esiste già un materiale chiamato "CustomMaterial3"
-    mat3 = bpy.data.materials.get("CustomMaterial3")
-    bsdf3 = mat3.node_tree.nodes.get("Principled BSDF")
-    if bsdf3:
-        bsdf3.inputs['Base Color'].default_value = (color3[0], color3[1], color3[2], 1)
-        bsdf3.inputs['Roughness'].default_value = 1.0
-
-    # Controlla se esiste già un materiale chiamato "CustomMaterial4"
-    mat4 = bpy.data.materials.get("CustomMaterial4")
-    bsdf4 = mat4.node_tree.nodes.get("Principled BSDF")
-    if bsdf4:
-        bsdf4.inputs['Base Color'].default_value = (color4[0], color4[1], color4[2], 1)
-        bsdf4.inputs['Roughness'].default_value = 1.0
-
-    # Controlla se esiste già un materiale chiamato "CustomMaterial5"
-    mat5 = bpy.data.materials.get("CustomMaterial5")
-    bsdf5 = mat5.node_tree.nodes.get("Principled BSDF")
-    if bsdf5:
-        bsdf5.inputs['Base Color'].default_value = (color5[0], color5[1], color5[2], 1)
-        bsdf5.inputs['Roughness'].default_value = 1.0
-
-    # Controlla se esiste già un materiale chiamato "CustomMaterial6"
-    mat6 = bpy.data.materials.get("CustomMaterial6")
-    bsdf6 = mat6.node_tree.nodes.get("Principled BSDF")
-    if bsdf6:
-        bsdf6.inputs['Base Color'].default_value = (color6[0], color6[1], color6[2], 1)
-        bsdf6.inputs['Roughness'].default_value = 1.0
-
-    # Controlla se esiste già un materiale chiamato "CustomMaterial7"
-    mat7 = bpy.data.materials.get("CustomMaterial7")
-    bsdf7 = mat7.node_tree.nodes.get("Principled BSDF")
-    if bsdf7:
-        bsdf7.inputs['Base Color'].default_value = (color7[0], color7[1], color7[2], 1)
-        bsdf7.inputs['Roughness'].default_value = 1.0
-
-    # Controlla se esiste già un materiale chiamato "CustomMaterial8"
-    mat8 = bpy.data.materials.get("CustomMaterial8")
-    bsdf8 = mat8.node_tree.nodes.get("Principled BSDF")
-    if bsdf8:
-        bsdf8.inputs['Base Color'].default_value = (color8[0], color8[1], color8[2], 1)
-        bsdf8.inputs['Roughness'].default_value = 1.0
-
-def assign_uncertainty_level(level):            
-    percentage_map = {
-    1: 7.143,
-    2: 21.429,
-    3: 35.714,
-    4: 50,
-    5: 64.286,
-    6: 78.571,
-    7: 92.857
-    }
-    
-    for obj in bpy.context.selected_objects:
-        if obj.type == 'MESH':
-            obj["Uncertainty Level"] = level
-            obj["Uncertainty Percentage"] = percentage_map[level]
-    return {'FINISHED'}
-
-    bpy.context.view_layer.update()
-
-def reset_uncertainty_level():
-    for obj in bpy.context.selected_objects:
-        if obj.type == 'MESH':
-            if "Uncertainty Level" in obj:
-                del obj["Uncertainty Level"]
-            if "Uncertainty Percentage" in obj:
-                del obj["Uncertainty Percentage"]
-    bpy.context.view_layer.update() 
 
 class SimpleOperator1(bpy.types.Operator):
     bl_idname = "object.apply_material1"
@@ -442,24 +348,105 @@ def execute_reset_colors():
     bpy.ops.object.reset_colors_to_defaults()
     return None  # Stop the timer 
         
+def update_material(self, context):
+    color1 = self.color1
+    color2 = self.color2
+    color3 = self.color3
+    color4 = self.color4
+    color5 = self.color5
+    color6 = self.color6
+    color7 = self.color7
+    color8 = self.color8
+
+    # Controlla se esiste già un materiale chiamato "CustomMaterial1"
+    mat1 = bpy.data.materials.get("CustomMaterial1")
+    bsdf1 = mat1.node_tree.nodes.get("Principled BSDF")
+    if bsdf1:
+        bsdf1.inputs['Base Color'].default_value = (color1[0], color1[1], color1[2], 1)
+        bsdf1.inputs['Roughness'].default_value = 1.0
+
+    # Controlla se esiste già un materiale chiamato "CustomMaterial2"
+    mat2 = bpy.data.materials.get("CustomMaterial2")
+    bsdf2 = mat2.node_tree.nodes.get("Principled BSDF")
+    if bsdf2:
+        bsdf2.inputs['Base Color'].default_value = (color2[0], color2[1], color2[2], 1)
+        bsdf2.inputs['Roughness'].default_value = 1.0
+
+    # Controlla se esiste già un materiale chiamato "CustomMaterial3"
+    mat3 = bpy.data.materials.get("CustomMaterial3")
+    bsdf3 = mat3.node_tree.nodes.get("Principled BSDF")
+    if bsdf3:
+        bsdf3.inputs['Base Color'].default_value = (color3[0], color3[1], color3[2], 1)
+        bsdf3.inputs['Roughness'].default_value = 1.0
+
+    # Controlla se esiste già un materiale chiamato "CustomMaterial4"
+    mat4 = bpy.data.materials.get("CustomMaterial4")
+    bsdf4 = mat4.node_tree.nodes.get("Principled BSDF")
+    if bsdf4:
+        bsdf4.inputs['Base Color'].default_value = (color4[0], color4[1], color4[2], 1)
+        bsdf4.inputs['Roughness'].default_value = 1.0
+
+    # Controlla se esiste già un materiale chiamato "CustomMaterial5"
+    mat5 = bpy.data.materials.get("CustomMaterial5")
+    bsdf5 = mat5.node_tree.nodes.get("Principled BSDF")
+    if bsdf5:
+        bsdf5.inputs['Base Color'].default_value = (color5[0], color5[1], color5[2], 1)
+        bsdf5.inputs['Roughness'].default_value = 1.0
+
+    # Controlla se esiste già un materiale chiamato "CustomMaterial6"
+    mat6 = bpy.data.materials.get("CustomMaterial6")
+    bsdf6 = mat6.node_tree.nodes.get("Principled BSDF")
+    if bsdf6:
+        bsdf6.inputs['Base Color'].default_value = (color6[0], color6[1], color6[2], 1)
+        bsdf6.inputs['Roughness'].default_value = 1.0
+
+    # Controlla se esiste già un materiale chiamato "CustomMaterial7"
+    mat7 = bpy.data.materials.get("CustomMaterial7")
+    bsdf7 = mat7.node_tree.nodes.get("Principled BSDF")
+    if bsdf7:
+        bsdf7.inputs['Base Color'].default_value = (color7[0], color7[1], color7[2], 1)
+        bsdf7.inputs['Roughness'].default_value = 1.0
+
+    # Controlla se esiste già un materiale chiamato "CustomMaterial8"
+    mat8 = bpy.data.materials.get("CustomMaterial8")
+    bsdf8 = mat8.node_tree.nodes.get("Principled BSDF")
+    if bsdf8:
+        bsdf8.inputs['Base Color'].default_value = (color8[0], color8[1], color8[2], 1)
+        bsdf8.inputs['Roughness'].default_value = 1.0
+
+def assign_uncertainty_level(level):            
+    percentage_map = {
+    1: 7.143,
+    2: 21.429,
+    3: 35.714,
+    4: 50,
+    5: 64.286,
+    6: 78.571,
+    7: 92.857
+    }
+    
+    for obj in bpy.context.selected_objects:
+        if obj.type == 'MESH':
+            obj["Uncertainty Level"] = level
+            obj["Uncertainty Percentage"] = percentage_map[level]
+    return {'FINISHED'}
+
+    bpy.context.view_layer.update()
+
+def reset_uncertainty_level():
+    for obj in bpy.context.selected_objects:
+        if obj.type == 'MESH':
+            if "Uncertainty Level" in obj:
+                del obj["Uncertainty Level"]
+            if "Uncertainty Percentage" in obj:
+                del obj["Uncertainty Percentage"]
+    bpy.context.view_layer.update() 
+    
 #endregion  
 
 
 #region Relevance
- 
-def assign_relevance_factor(factor):
-    for obj in bpy.context.selected_objects:
-        if obj.type == 'MESH':
-            obj["Relevance"] = factor
-    bpy.context.view_layer.update()
-
-def reset_relevance_factor():
-    for obj in bpy.context.selected_objects:
-        if obj.type == 'MESH':
-            if "Relevance" in obj:
-                del obj["Relevance"]
-    bpy.context.view_layer.update()
-    
+  
 class AssignRelevance(bpy.types.Operator):
     bl_idname = "object.assign_relevance"
     bl_label = "Assign Relevance"
@@ -480,37 +467,25 @@ class ResetRelevance(bpy.types.Operator):
         
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
-   
+
+def assign_relevance_factor(factor):
+    for obj in bpy.context.selected_objects:
+        if obj.type == 'MESH':
+            obj["Relevance"] = factor
+    bpy.context.view_layer.update()
+
+def reset_relevance_factor():
+    for obj in bpy.context.selected_objects:
+        if obj.type == 'MESH':
+            if "Relevance" in obj:
+                del obj["Relevance"]
+    bpy.context.view_layer.update()
+
 #endregion
 
  
 #region Calculate volume
-   
-def apply_scale_selection(self): 
-    if bpy.context.selected_objects:
-        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-        self.report({'INFO'}, "Scale correctly applied")                
-    else:
-        self.report({'ERROR'}, "No object selected")
-    return
-
-def calculate_volume(obj, self):
-    bm = bmesh.new()
-    bm.from_mesh(obj.data)
-    volume = bm.calc_volume(signed=True)
-    bm.free()
-    obj["Volume"] = volume
-    self.report({'INFO'}, "Volume correctly calculated")    
-    bpy.context.view_layer.update()
-    return
-
-def reset_volume():
-    for obj in bpy.context.selected_objects:
-        if obj.type == 'MESH':
-            if "Volume" in obj:
-                del obj["Volume"]
-    bpy.context.view_layer.update()
-  
+ 
 class ApplyScaleSelection(bpy.types.Operator):
     bl_idname = "object.apply_scale_selection"
     bl_label = "Apply Scale of Selection"
@@ -549,6 +524,31 @@ class ResetVolume(bpy.types.Operator):
             
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
+   
+def apply_scale_selection(self): 
+    if bpy.context.selected_objects:
+        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+        self.report({'INFO'}, "Scale correctly applied")                
+    else:
+        self.report({'ERROR'}, "No object selected")
+    return
+
+def calculate_volume(obj, self):
+    bm = bmesh.new()
+    bm.from_mesh(obj.data)
+    volume = bm.calc_volume(signed=True)
+    bm.free()
+    obj["Volume"] = volume
+    self.report({'INFO'}, "Volume correctly calculated")    
+    bpy.context.view_layer.update()
+    return
+
+def reset_volume():
+    for obj in bpy.context.selected_objects:
+        if obj.type == 'MESH':
+            if "Volume" in obj:
+                del obj["Volume"]
+    bpy.context.view_layer.update()
 
 #endregion
 
@@ -556,6 +556,28 @@ class ResetVolume(bpy.types.Operator):
 #region Calculate AU_V and AU_VR
    
 #def calculate AU_V and AU_VR
+
+class CalculateAUV(bpy.types.Operator):
+    bl_idname = "object.calculate_au_v"
+    bl_label = "Calculate AU_V"
+
+    def execute(self, context):    
+        au_v = calculate_average_uncertainty(self)
+        context.scene.au_v_result = f"{au_v:.2f}%"
+
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+        return {'FINISHED'}
+
+class CalculateAUVR(bpy.types.Operator):
+    bl_idname = "object.calculate_au_vr"
+    bl_label = "Calculate AU_VR"
+
+    def execute(self, context):
+        au_vr = calculate_average_uncertainty_with_relevance(self)
+        context.scene.au_vr_result = f"{au_vr:.2f}%"
+        
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+        return {'FINISHED'} 
 
 def calculate_average_uncertainty(self):
     total_volume = 0
@@ -606,28 +628,6 @@ def calculate_average_uncertainty_with_relevance(self):
 
     au_vr = weighted_sum / total_volume
     return au_vr
-
-class CalculateAUV(bpy.types.Operator):
-    bl_idname = "object.calculate_au_v"
-    bl_label = "Calculate AU_V"
-
-    def execute(self, context):    
-        au_v = calculate_average_uncertainty(self)
-        context.scene.au_v_result = f"{au_v:.2f}%"
-
-        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
-        return {'FINISHED'}
-
-class CalculateAUVR(bpy.types.Operator):
-    bl_idname = "object.calculate_au_vr"
-    bl_label = "Calculate AU_VR"
-
-    def execute(self, context):
-        au_vr = calculate_average_uncertainty_with_relevance(self)
-        context.scene.au_vr_result = f"{au_vr:.2f}%"
-        
-        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
-        return {'FINISHED'} 
 
 #endregion     
 
@@ -736,6 +736,7 @@ class Assign(bpy.types.Panel):
 
 
 #region Draw calculate panel
+
 class Calculate(bpy.types.Panel):
     bl_label = "Calculate"
     bl_space_type = 'VIEW_3D'
