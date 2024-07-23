@@ -5,7 +5,7 @@ bl_info = {
     "category": "Model Analysis",
     "author": "Riccardo Foschi and Chat GPT",
     "description": "Allows to calculate the average uncertainty weighted with the volume (AU_V) and the average uncertainty weighted with the volume and relevance (AU_VR) for hypothetical 3D architectural reconstruction models",
-    "version": (2, 2, 2),
+    "version": (2, 2, 3),
 }
 
 
@@ -26,35 +26,6 @@ class ColorProperties(PropertyGroup):
         size=4,
         default=(1.0, 1.0, 1.0, 1.0)
     )
-
-
-
-
-#def CreateMaterial(self, context):
-#    obj = context.active_object
-#    if obj is None or obj.type != 'MESH':
-#        self.report({'WARNING'}, "No mesh object selected")
-#        return {'CANCELLED'}
-#    else:    
-#        mat = bpy.data.materials.get(self.material_name)
-#        if mat is None:
-#            mat = bpy.data.materials.new(name=self.material_name)
-#        
-#        mat.use_nodes = True
-#        mat.use_fake_user = False
-#        bsdf = mat.node_tree.nodes.get("Principled BSDF")
-#        if bsdf is None:
-#            bsdf = mat.node_tree.nodes.new(type="ShaderNodeBsdfPrincipled")
-#        bsdf.inputs["Base Color"].default_value = self.material_color
-#        bsdf.inputs["Roughness"].default_value = 1.0
-#        
-#        if obj.data.materials:
-#            obj.data.materials[0] = mat
-#        else:
-#            obj.data.materials.append(mat)
-#        
-#        return {'FINISHED'}
-
 
 
 # Funzione per aggiornare il materiale
@@ -135,12 +106,10 @@ def reset_relevance_factor():
     
 #def concerning Volume    
     
-def apply_scale_selection(self):
-    
+def apply_scale_selection(self): 
     if bpy.context.selected_objects:
         bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-        self.report({'INFO'}, "Scale correctly applied")
-                     
+        self.report({'INFO'}, "Scale correctly applied")                
     else:
         self.report({'ERROR'}, "No object selected")
     return
@@ -151,8 +120,8 @@ def calculate_volume(obj, self):
     volume = bm.calc_volume(signed=True)
     bm.free()
     obj["Volume"] = volume
+    self.report({'INFO'}, "Volume correctly calculated")    
     bpy.context.view_layer.update()
-    self.report({'INFO'}, "Volume correctly calculated")
     return
 
 
@@ -175,8 +144,7 @@ def calculate_average_uncertainty(self):
 
     for obj in bpy.data.objects:
 
-        if obj.type == 'MESH':
-            
+        if obj.type == 'MESH':          
             if "Uncertainty Level" in obj and "Volume" not in obj:
                 self.report({'ERROR'}, "Calculate volume of all objects first")
                 au_v = 0
@@ -383,7 +351,6 @@ class ResetVolume(bpy.types.Operator):
         return {'FINISHED'}
     
 
-
 class CalculateAUV(bpy.types.Operator):
     bl_idname = "object.calculate_au_v"
     bl_label = "Calculate AU_V"
@@ -586,7 +553,7 @@ class Calculate(bpy.types.Panel):
         row = box1.column()
         row.operator("object.apply_scale_selection", text="Apply Scale")
 
-        row.operator("object.calculate_volume", text="Calculate Volume ")
+        row.operator("object.calculate_volume", text="Calculate Volume")
 
         row = box1.column()
         row.operator("object.reset_volume", text="Remove Volume Property")     
@@ -630,9 +597,10 @@ class Select(bpy.types.Panel):
 
 
 
-def on_load(dummy):
-    # Code to run when a Blender file is loaded
-    bpy.ops.object.my_operator()
+
+def execute_reset_colors():
+    bpy.ops.object.reset_colors_to_defaults()
+    return None  # Stop the timer
 
 
 
@@ -661,7 +629,6 @@ def register():
     bpy.utils.register_class(ResetVolume)
     bpy.utils.register_class(CalculateAUV)
     bpy.utils.register_class(CalculateAUVR)
-    bpy.utils.register_class(ResetColorsToDefaults)
     bpy.utils.register_class(SelectByUncertainty)
     
     bpy.types.Scene.relevance_factor = bpy.props.FloatProperty(
@@ -683,12 +650,10 @@ def register():
     )
     
     
-    # Register the load handler
-    if on_load not in bpy.app.handlers.load_post:
-        bpy.app.handlers.load_post.append(on_load)
+    bpy.utils.register_class(ResetColorsToDefaults)    
     
-    # Execute code when the addon is activated
-    bpy.ops.object.reset_colors_to_defaults()
+    # Register the timer to execute the operator
+    bpy.app.timers.register(execute_reset_colors, first_interval=0.1)
 
 def unregister():
     bpy.utils.register_class(Assign)
@@ -715,18 +680,12 @@ def unregister():
     bpy.utils.unregister_class(ResetVolume)
     bpy.utils.unregister_class(CalculateAUV)
     bpy.utils.unregister_class(CalculateAUVR)
-    bpy.utils.unregister_class(ResetColorsToDefaults)
     bpy.utils.unregister_class(SelectByUncertainty)
     del bpy.types.Scene.relevance_factor
     del bpy.types.Scene.au_v_result
     del bpy.types.Scene.au_vr_result
 
-    # Unregister the load handler
-    if on_load in bpy.app.handlers.load_post:
-        bpy.app.handlers.load_post.remove(on_load)
-
-
-
+    bpy.utils.unregister_class(ResetColorsToDefaults)
 
 if __name__ == "__main__":
     register()
