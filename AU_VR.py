@@ -5,9 +5,8 @@ bl_info = {
     "category": "Model Analysis",
     "author": "Riccardo Foschi and Chat GPT",
     "description": "Allows to calculate the average uncertainty weighted with the volume (AU_V) and the average uncertainty weighted with the volume and relevance (AU_VR) for hypothetical 3D architectural reconstruction models",
-    "version": (1, 9, 2),
+    "version": (1, 0, 0),
 }
-
 
 
 
@@ -18,67 +17,19 @@ from bpy.props import FloatVectorProperty
 from bpy.types import Panel, PropertyGroup
 
 
-# Definisci un nuovo PropertyGroup per il colore
 class ColorProperties(PropertyGroup):
-    color1: FloatVectorProperty(
-        name="Color 1",
+       
+    color: FloatVectorProperty(
+        name="Color",
         subtype='COLOR',
         min=0.0, max=1.0,
         size=4,
-        default=(1.0, 1.0, 1.0, 1.0) # white color with alpha
+        default=(1.0, 1.0, 1.0, 1.0)
     )
-    color2: FloatVectorProperty(
-        name="Color 2",
-        subtype='COLOR',
-        min=0.0, max=1.0,
-        size=4,
-        default=(0.0, 0.0, 1.0, 1.0) # blue color with alpha
-    )
-    color3: FloatVectorProperty(
-        name="Color 3",
-        subtype='COLOR',
-        min=0.0, max=1.0,
-        size=4,
-        default=(0.0, 1.0, 1.0, 1.0) # cyan color with alpha
-    )
-    color4: FloatVectorProperty(
-        name="Color 4",
-        subtype='COLOR',
-        min=0.0, max=1.0,
-        size=4,
-        default=(0.0, 1.0, 0.0, 1.0) # green color with alpha
-    )
-    color5: FloatVectorProperty(
-        name="Color 5",
-        subtype='COLOR',
-        min=0.0, max=1.0,
-        size=4,
-        default=(1.0, 1.0, 0.0, 1.0) # yellow color with alpha
-    )
-    color6: FloatVectorProperty(
-        name="Color 6",
-        subtype='COLOR',
-        min=0.0, max=1.0,
-        size=4,
-        default=(1.0, 0.333, 0.0, 1.0) # orange color with alpha
-    )
-    color7: FloatVectorProperty(
-        name="Color 7",
-        subtype='COLOR',
-        min=0.0, max=1.0,
-        size=4,
-        default=(1.0, 0.0, 0.0, 1.0) # red color with alpha
-    )     
-    color8: FloatVectorProperty(
-        name="Color 8",
-        subtype='COLOR',
-        min=0.0, max=1.0,
-        size=4,
-        default=(0.0, 0.0, 0.0, 1.0) # black color with alpha
-    )   
 
 
 
+# Funzione per aggiornare il materiale
 def update_material(obj, color):
     mat_name = "Uncertainty_{}".format(color)
     mat = bpy.data.materials.get(mat_name)
@@ -96,17 +47,7 @@ def update_material(obj, color):
 
     obj.material_slots[0].material = mat
 
-def assign_uncertainty_level(level):
-    color_map = {
-        1: (1, 1, 1, 1),
-        2: (0, 0, 1, 1),
-        3: (0, 1, 1, 1),
-        4: (0, 1, 0, 1),
-        5: (1, 1, 0, 1),
-        6: (1, 0.333, 0, 1),
-        7: (1, 0, 0, 1)
-    }
-
+def assign_uncertainty_level(level, color):    
     percentage_map = {
         1: 7.143,
         2: 21.429,
@@ -119,9 +60,26 @@ def assign_uncertainty_level(level):
 
     for obj in bpy.context.selected_objects:
         if obj.type == 'MESH':
-            obj["Uncertainty Level"] = level
-            obj["Uncertainty Percentage"] = percentage_map[level]
-            update_material(obj, color_map[level])
+            if level == 8:
+                reset_uncertainty_level()
+            else:
+                obj["Uncertainty Level"] = level
+                obj["Uncertainty Percentage"] = percentage_map[level]
+                update_material(obj, color)
+            
+            # Crea un nuovo materiale
+            mat = bpy.data.materials.new(name="TestMaterial")
+            mat.use_nodes = True
+            bsdf = mat.node_tree.nodes.get("Principled BSDF")
+            if bsdf:
+                bsdf.inputs['Base Color'].default_value = (color)  # Imposta il colore
+
+            # Assegna il materiale all'oggetto
+            if len(obj.data.materials):
+                obj.data.materials[0] = mat
+            else:
+                obj.data.materials.append(mat)
+                
     bpy.context.view_layer.update()
 
 def reset_uncertainty_level():
@@ -147,27 +105,6 @@ def reset_relevance_factor():
                 del obj["Relevance"]
     bpy.context.view_layer.update()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-def apply_scale_selection():
-    for obj in bpy.context.selected_objects:
-        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-    bpy.context.view_layer.update()
-    return {'Scale applied'}
-
-
 def calculate_volume(obj):
     bm = bmesh.new()
     bm.from_mesh(obj.data)
@@ -183,26 +120,17 @@ def reset_volume():
             if "Volume" in obj:
                 del obj["Volume"]
     bpy.context.view_layer.update()
-    
-    
 
-def calculate_average_uncertainty(self):
+def calculate_average_uncertainty():
     total_volume = 0
     weighted_sum = 0
 
     for obj in bpy.data.objects:
-
-        if obj.type == 'MESH':
-            if "Volume" not in obj:
-                self.report({'ERROR'}, "Calculate volume of all objects first")
-                au_v = 0
-                return au_v
-
-            elif "Uncertainty Level" in obj and "Volume" in obj:
-                volume = obj["Volume"]
-                uncertainty_percentage = obj["Uncertainty Percentage"]
-                weighted_sum += volume * uncertainty_percentage
-                total_volume += volume
+        if "Uncertainty Level" in obj and "Volume" in obj:
+            volume = obj["Volume"]
+            uncertainty_percentage = obj["Uncertainty Percentage"]
+            weighted_sum += volume * uncertainty_percentage
+            total_volume += volume
 
     if total_volume == 0:
         return 0
@@ -210,29 +138,17 @@ def calculate_average_uncertainty(self):
     au_v = weighted_sum / total_volume
     return au_v
 
-
-
-
-def calculate_average_uncertainty_with_relevance(self):
+def calculate_average_uncertainty_with_relevance():
     total_volume = 0
     weighted_sum = 0
 
-
     for obj in bpy.data.objects:
-
-        if obj.type == 'MESH':
-            if "Volume" not in obj:
-                self.report({'ERROR'}, "Calculate volume of all objects first")
-                au_vr = 0
-                return au_vr
-            
-            elif "Uncertainty Level" in obj and "Volume" in obj: 
-                volume = obj["Volume"]
-                uncertainty_percentage = obj["Uncertainty Percentage"]
-                relevance_factor = obj.get("Relevance", 1)
-                weighted_sum += volume * uncertainty_percentage * relevance_factor
-                total_volume += volume * relevance_factor
-            
+        if "Uncertainty Level" in obj and "Volume" in obj:
+            volume = obj["Volume"]
+            uncertainty_percentage = obj["Uncertainty Percentage"]
+            relevance_factor = obj.get("Relevance", 1)
+            weighted_sum += volume * uncertainty_percentage * relevance_factor
+            total_volume += volume * relevance_factor
 
     if total_volume == 0:
         return 0
@@ -240,7 +156,141 @@ def calculate_average_uncertainty_with_relevance(self):
     au_vr = weighted_sum / total_volume
     return au_vr
 
+class UncertaintyPanel(bpy.types.Panel):
+    bl_label = "Uncertainty"
+    bl_idname = "OBJECT_PT_uncertainty"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = 'Uncertainty'
 
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        
+        row = layout.row()
+        row.operator("object.reset_colors_to_defaults", text="Reset colors to defaults")
+        
+        #1
+        row = layout.row()
+        col = row.column()
+        color_props1 = scene.ColorProperties1
+        col.prop(color_props1, "color", text="")
+        col = row.column()     
+        col.operator("object.assign_uncertainty_level", text="Assign 1").level = 1
+        #end
+            
+        #2
+        row = layout.row()
+        col = row.column()
+        color_props2 = scene.ColorProperties2
+        col.prop(color_props2, "color", text="")
+        col = row.column()     
+        col.operator("object.assign_uncertainty_level", text="Assign 2").level = 2
+        #end
+        
+        #3
+        row = layout.row()
+        col = row.column()
+        color_props3 = scene.ColorProperties3
+        col.prop(color_props3, "color", text="")
+        col = row.column()     
+        col.operator("object.assign_uncertainty_level", text="Assign 3").level = 3
+        #end
+        
+        #4
+        row = layout.row()
+        col = row.column()
+        color_props4 = scene.ColorProperties4
+        col.prop(color_props4, "color", text="")
+        col = row.column()     
+        col.operator("object.assign_uncertainty_level", text="Assign 4").level = 4
+        #end
+        
+        #5
+        row = layout.row()
+        col = row.column()
+        color_props5 = scene.ColorProperties5
+        col.prop(color_props5, "color", text="")
+        col = row.column()     
+        col.operator("object.assign_uncertainty_level", text="Assign 5").level = 5
+        #end
+        
+        #6
+        row = layout.row()
+        col = row.column()
+        color_props6 = scene.ColorProperties6
+        col.prop(color_props6, "color", text="")
+        col = row.column()     
+        col.operator("object.assign_uncertainty_level", text="Assign 6").level = 6
+        #end
+        
+        #7
+        row = layout.row()
+        col = row.column()
+        color_props7 = scene.ColorProperties7
+        col.prop(color_props7, "color", text="")
+        col = row.column()     
+        col.operator("object.assign_uncertainty_level", text="Assign 7").level = 7
+        #end
+        
+        #8
+        row = layout.row()
+        col = row.column()
+        color_props8 = scene.ColorProperties8
+        col.prop(color_props8, "color", text="")
+        col = row.column()     
+        col.operator("object.assign_uncertainty_level", text="Assign 8").level = 8
+        #end        
+        
+        row = self.layout.row()
+        row.label(text="Assign Uncertainty level")
+
+
+        row = layout.row()
+        col = row.column()
+        col.prop(color_props1, "color8", text="")
+        row.operator("object.reset_uncertainty_level", text="Abstention/Reset")
+
+        row = layout.row()
+        row.label(text="Assign Relevance Factor")
+
+        row = layout.row()
+        row.prop(context.scene, "relevance_factor", text="Relevance Factor")
+
+        row = layout.row()
+        row.operator("object.assign_relevance", text="Assign Relevance")
+
+        row = layout.row()
+        row.operator("object.reset_relevance", text="Reset Relevance")
+
+        row = layout.row()
+        row.label(text="Calculate Volume")
+
+        row = layout.row()
+        row.operator("object.calculate_volume", text="Calculate Volume of selection")
+
+        row = layout.row()
+        row.operator("object.reset_volume", text="Reset Volume")
+
+        row = layout.row()
+        row.label(text="Calculate Average Uncertainty")
+
+        row = layout.row()
+        row.operator("object.calculate_au_v", text="Calculate AU_V")
+        row = layout.row()
+        row.prop(context.scene, "au_v_result", text="AU_V Result")
+
+        row = layout.row()
+        row.operator("object.calculate_au_vr", text="Calculate AU_VR")
+        row = layout.row()
+        row.prop(context.scene, "au_vr_result", text="AU_VR Result")
+
+        row = layout.row()
+        row.label(text="Select by Uncertainty")
+
+        for i in range(1, 8):
+            row = layout.row()
+            row.operator("object.select_by_uncertainty", text=str(i)).level = i
 
 class AssignUncertaintyLevel(bpy.types.Operator):
     bl_idname = "object.assign_uncertainty_level"
@@ -249,7 +299,27 @@ class AssignUncertaintyLevel(bpy.types.Operator):
     level: bpy.props.IntProperty()
 
     def execute(self, context):
-        assign_uncertainty_level(self.level)
+        
+        scene = context.scene
+        if self.level == 1:
+            color_props = scene.ColorProperties1
+        elif self.level == 2:
+            color_props = scene.ColorProperties2
+        elif self.level == 3:
+            color_props = scene.ColorProperties3
+        elif self.level == 4:
+            color_props = scene.ColorProperties4
+        elif self.level == 5:
+            color_props = scene.ColorProperties5
+        elif self.level == 6:
+            color_props = scene.ColorProperties6
+        elif self.level == 7:
+            color_props = scene.ColorProperties7
+        else:
+            color_props = scene.ColorProperties8
+        color = color_props.color
+        
+        assign_uncertainty_level(self.level, color)
         
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
@@ -285,33 +355,9 @@ class ResetRelevance(bpy.types.Operator):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
 
-
-
-
-
-
-
-
-
-
-
-
-class ApplyScaleSelection(bpy.types.Operator):
-    bl_idname = "object.apply_scale_selection"
-    bl_label = "Apply Scale to Selection"
-    
-
-    def execute(self, context):
-        apply_scale_selection()
-        
-        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
-        return {'FINISHED'}
-
-
 class CalculateVolume(bpy.types.Operator):
     bl_idname = "object.calculate_volume"
     bl_label = "Calculate Volume of selection"
-
 
     def execute(self, context):
         for obj in bpy.context.selected_objects:
@@ -335,10 +381,10 @@ class CalculateAUV(bpy.types.Operator):
     bl_idname = "object.calculate_au_v"
     bl_label = "Calculate AU_V"
 
-    def execute(self, context):    
-        au_v = calculate_average_uncertainty(self)
+    def execute(self, context):
+        au_v = int(calculate_average_uncertainty())
         context.scene.au_v_result = f"{au_v:.2f}%"
-
+        
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
 
@@ -347,12 +393,40 @@ class CalculateAUVR(bpy.types.Operator):
     bl_label = "Calculate AU_VR"
 
     def execute(self, context):
-        au_vr = calculate_average_uncertainty_with_relevance(self)
+        au_vr = int(calculate_average_uncertainty_with_relevance())
         context.scene.au_vr_result = f"{au_vr:.2f}%"
         
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
 
+class ResetColorsToDefaults(bpy.types.Operator):
+    bl_idname = "object.reset_colors_to_defaults"
+    bl_label = "Reset colors to defaults"
+
+    def execute(self, context):
+        
+        color_map = {
+            1: (1, 1, 1, 1),
+            2: (0, 0, 1, 1),
+            3: (0, 1, 1, 1),
+            4: (0, 1, 0, 1),
+            5: (1, 1, 0, 1),
+            6: (1, 0.333, 0, 1),
+            7: (1, 0, 0, 1),
+            8: (0, 0, 0, 1)
+        }
+        
+        context.scene.ColorProperties1.color = color_map[1]
+        context.scene.ColorProperties2.color = color_map[2]
+        context.scene.ColorProperties3.color = color_map[3]
+        context.scene.ColorProperties4.color = color_map[4]
+        context.scene.ColorProperties5.color = color_map[5]
+        context.scene.ColorProperties6.color = color_map[6]
+        context.scene.ColorProperties7.color = color_map[7]
+        context.scene.ColorProperties8.color = color_map[8]
+        
+        return {'FINISHED'}
+        
 class SelectByUncertainty(bpy.types.Operator):
     bl_idname = "object.select_by_uncertainty"
     bl_label = "Select by Uncertainty"
@@ -365,192 +439,28 @@ class SelectByUncertainty(bpy.types.Operator):
             if "Uncertainty Level" in obj and obj["Uncertainty Level"] == self.level:
                 obj.select_set(True)
         return {'FINISHED'}
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-class Assign(bpy.types.Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = 'Uncertainty'
-    bl_label = "Assign"
-
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-        
-        # Create Box 1
-        box1 = layout.box()
-        box1.label(text="Assign Uncertainty level")
-
-                 
-        row = box1.row(align=True)
-        row.prop(scene.color_props, "color1", text="")
-        sub = row.row()
-        sub.scale_x = 2.0
-        sub.operator("object.assign_uncertainty_level", text="Assign Uncertainty 1").level = 1      
-
-        
-        row = box1.row(align=True)
-        row.prop(scene.color_props, "color2", text="")
-        sub = row.row()
-        sub.scale_x = 2.0
-        sub.operator("object.assign_uncertainty_level", text="Assign Uncertainty 2").level = 2   
-        
-        row = box1.row(align=True)
-        row.prop(scene.color_props, "color3", text="")
-        sub = row.row()
-        sub.scale_x = 2.0
-        sub.operator("object.assign_uncertainty_level", text="Assign Uncertainty 3").level = 3      
-
-        
-        row = box1.row(align=True)
-        row.prop(scene.color_props, "color4", text="")
-        sub = row.row()
-        sub.scale_x = 2.0
-        sub.operator("object.assign_uncertainty_level", text="Assign Uncertainty 4").level = 4              
-        
-        row = box1.row(align=True)
-        row.prop(scene.color_props, "color5", text="")
-        sub = row.row()
-        sub.scale_x = 2.0
-        sub.operator("object.assign_uncertainty_level", text="Assign Uncertainty 5").level = 5   
-        
-        row = box1.row(align=True)
-        row.prop(scene.color_props, "color6", text="")
-        sub = row.row()
-        sub.scale_x = 2.0
-        sub.operator("object.assign_uncertainty_level", text="Assign Uncertainty 6").level = 6      
-
-        
-        row = box1.row(align=True)
-        row.prop(scene.color_props, "color7", text="")
-        sub = row.row()
-        sub.scale_x = 2.0
-        sub.operator("object.assign_uncertainty_level", text="Assign Uncertainty 7").level = 7               
-            
-        row = box1.row()
-        
-        row = box1.row(align=True)
-        row.prop(scene.color_props, "color8", text="")
-        sub = row.row()
-        sub.scale_x = 2.0
-        sub.operator("object.reset_uncertainty_level", text="Abstention") 
-
-
-        # Create Box 2
-        box2 = layout.box()
-        box2.label(text="Assign Relevance Factor")
-        
-        row = box2.row(align=True)
-        row.prop(context.scene, "relevance_factor", text="")
-        sub = row.row()
-        sub.scale_x = 1.5
-        sub.operator("object.assign_relevance", text="Assign Relevance") 
-                        
-        row = box2.row()
-        row.operator("object.reset_relevance", text="Remove Relevance from Selection")
-
-        
-        
-        
-class Calculate(bpy.types.Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = 'Uncertainty'
-    bl_label = "Calculate"
-
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene   
-        
-        
-        
-        # Create Box 1
-        box1 = layout.box()
-        box1.label(text="Calculate Volume")
-
-        row = box1.column()
-        row.operator("object.apply_scale_selection", text="Apply Scale to Selection")
-
-        row.operator("object.calculate_volume", text="Calculate Volume of selection")
-
-        row = box1.column()
-        row.operator("object.reset_volume", text="Remove Volume from selection")
-        
-        
-        
-
-
-        # Create Box 2
-        box2 = layout.box()
-        box2.label(text="Calculate Average Uncertainty")
-
-
-        row = box2.column()
-        row.operator("object.calculate_au_v", text="Calculate AU_V")
-
-        row.prop(context.scene, "au_v_result", text="AU_V")
-        
-        row = box2.column()
-        row.operator("object.calculate_au_vr", text="Calculate AU_VR")
-
-        row.prop(context.scene, "au_vr_result", text="AU_VR")
-        
-        
-        
-        
-class Select(bpy.types.Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = 'Uncertainty'
-    bl_label = "Select"
-
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene 
-                  
-        # Create Box 1
-        box1 = layout.box()
-        box1.label(text="Select by Uncertainty")
-                       
-        row = box1.row(align=True)
-        for i in range(1, 8):
-
-            row.operator("object.select_by_uncertainty", text=str(i)).level = i
-
 
 
 def register():
     bpy.utils.register_class(ColorProperties)
-    bpy.types.Scene.color_props = bpy.props.PointerProperty(type=ColorProperties)
-    
-    bpy.utils.register_class(Assign)
-    bpy.utils.register_class(Calculate)
-    bpy.utils.register_class(Select)
-    
+    bpy.types.Scene.ColorProperties1 = bpy.props.PointerProperty(type=ColorProperties)
+    bpy.types.Scene.ColorProperties2 = bpy.props.PointerProperty(type=ColorProperties)
+    bpy.types.Scene.ColorProperties3 = bpy.props.PointerProperty(type=ColorProperties)
+    bpy.types.Scene.ColorProperties4 = bpy.props.PointerProperty(type=ColorProperties)
+    bpy.types.Scene.ColorProperties5 = bpy.props.PointerProperty(type=ColorProperties)
+    bpy.types.Scene.ColorProperties6 = bpy.props.PointerProperty(type=ColorProperties)
+    bpy.types.Scene.ColorProperties7 = bpy.props.PointerProperty(type=ColorProperties)
+    bpy.types.Scene.ColorProperties8 = bpy.props.PointerProperty(type=ColorProperties)
+    bpy.utils.register_class(UncertaintyPanel)
     bpy.utils.register_class(AssignUncertaintyLevel)
     bpy.utils.register_class(ResetUncertaintyLevel)
     bpy.utils.register_class(AssignRelevance)
     bpy.utils.register_class(ResetRelevance)
-
-    bpy.utils.register_class(ApplyScaleSelection)
-    
     bpy.utils.register_class(CalculateVolume)
     bpy.utils.register_class(ResetVolume)
     bpy.utils.register_class(CalculateAUV)
     bpy.utils.register_class(CalculateAUVR)
+    bpy.utils.register_class(ResetColorsToDefaults)
     bpy.utils.register_class(SelectByUncertainty)
     
     bpy.types.Scene.relevance_factor = bpy.props.FloatProperty(
@@ -573,25 +483,25 @@ def register():
 
 def unregister():
     bpy.utils.unregister_class(ColorProperties)
-    del bpy.types.Scene.color_props
-    
-    bpy.utils.unregister_class(Assign)
-    bpy.utils.unregister_class(Calculate)    
-    bpy.utils.unregister_class(Select)
-        
+    del bpy.types.Scene.ColorProperties1
+    del bpy.types.Scene.ColorProperties2
+    del bpy.types.Scene.ColorProperties3
+    del bpy.types.Scene.ColorProperties4
+    del bpy.types.Scene.ColorProperties5        
+    del bpy.types.Scene.ColorProperties6         
+    del bpy.types.Scene.ColorProperties7        
+    del bpy.types.Scene.ColorProperties8
+    bpy.utils.unregister_class(UncertaintyPanel)
     bpy.utils.unregister_class(AssignUncertaintyLevel)
     bpy.utils.unregister_class(ResetUncertaintyLevel)
     bpy.utils.unregister_class(AssignRelevance)
     bpy.utils.unregister_class(ResetRelevance)
-
-    bpy.utils.unregister_class(ApplyScaleSelection)    
-        
     bpy.utils.unregister_class(CalculateVolume)
     bpy.utils.unregister_class(ResetVolume)
     bpy.utils.unregister_class(CalculateAUV)
     bpy.utils.unregister_class(CalculateAUVR)
+    bpy.utils.unregister_class(ResetColorsToDefaults)
     bpy.utils.unregister_class(SelectByUncertainty)
-    
     del bpy.types.Scene.relevance_factor
     del bpy.types.Scene.au_v_result
     del bpy.types.Scene.au_vr_result
