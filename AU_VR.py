@@ -5,7 +5,7 @@ bl_info = {
     "category": "Model Analysis",
     "author": "Riccardo Foschi and Chat GPT",
     "description": "Allows to calculate the average uncertainty weighted with the volume (AU_V) and the average uncertainty weighted with the volume and relevance (AU_VR) for hypothetical 3D architectural reconstruction models",
-    "version": (2, 2, 5),
+    "version": (2, 3, 1),
 }
 
 import bpy
@@ -34,69 +34,81 @@ def update_material(self, context):
 
     # Controlla se esiste già un materiale chiamato "CustomMaterial1"
     mat1 = bpy.data.materials.get("CustomMaterial1")
-    bsdf1 = mat1.node_tree.nodes.get("Principled BSDF")
+    bsdf1 = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
+
     if bsdf1:
-        bsdf1.inputs['Base Color'].default_value = (color1[0], color1[1], color1[2], 1)
-        bsdf1.inputs['Roughness'].default_value = 1.0
+        bsdf1.inputs[0].default_value = (color1[0], color1[1], color1[2], 1)
+        bsdf1.inputs[2].default_value = 1.0
 
     # Controlla se esiste già un materiale chiamato "CustomMaterial2"
     mat2 = bpy.data.materials.get("CustomMaterial2")
-    bsdf2 = mat2.node_tree.nodes.get("Principled BSDF")
+    bsdf2 = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
     if bsdf2:
-        bsdf2.inputs['Base Color'].default_value = (color2[0], color2[1], color2[2], 1)
-        bsdf2.inputs['Roughness'].default_value = 1.0
+        bsdf2.inputs[0].default_value = (color2[0], color2[1], color2[2], 1)
+        bsdf2.inputs[2].default_value = 1.0
 
     # Controlla se esiste già un materiale chiamato "CustomMaterial3"
     mat3 = bpy.data.materials.get("CustomMaterial3")
-    bsdf3 = mat3.node_tree.nodes.get("Principled BSDF")
+    bsdf3 = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
     if bsdf3:
-        bsdf3.inputs['Base Color'].default_value = (color3[0], color3[1], color3[2], 1)
-        bsdf3.inputs['Roughness'].default_value = 1.0
+        bsdf3.inputs[0].default_value = (color3[0], color3[1], color3[2], 1)
+        bsdf3.inputs[2].default_value = 1.0
 
     # Controlla se esiste già un materiale chiamato "CustomMaterial4"
     mat4 = bpy.data.materials.get("CustomMaterial4")
-    bsdf4 = mat4.node_tree.nodes.get("Principled BSDF")
+    bsdf4 = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
     if bsdf4:
-        bsdf4.inputs['Base Color'].default_value = (color4[0], color4[1], color4[2], 1)
-        bsdf4.inputs['Roughness'].default_value = 1.0
+        bsdf4.inputs[0].default_value = (color4[0], color4[1], color4[2], 1)
+        bsdf4.inputs[2].default_value = 1.0
 
     # Controlla se esiste già un materiale chiamato "CustomMaterial5"
     mat5 = bpy.data.materials.get("CustomMaterial5")
-    bsdf5 = mat5.node_tree.nodes.get("Principled BSDF")
+    bsdf5 = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
     if bsdf5:
-        bsdf5.inputs['Base Color'].default_value = (color5[0], color5[1], color5[2], 1)
-        bsdf5.inputs['Roughness'].default_value = 1.0
+        bsdf5.inputs[0].default_value = (color5[0], color5[1], color5[2], 1)
+        bsdf5.inputs[2].default_value = 1.0
 
     # Controlla se esiste già un materiale chiamato "CustomMaterial6"
     mat6 = bpy.data.materials.get("CustomMaterial6")
-    bsdf6 = mat6.node_tree.nodes.get("Principled BSDF")
+    bsdf6 = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
     if bsdf6:
-        bsdf6.inputs['Base Color'].default_value = (color6[0], color6[1], color6[2], 1)
-        bsdf6.inputs['Roughness'].default_value = 1.0
+        bsdf6.inputs[0].default_value = (color6[0], color6[1], color6[2], 1)
+        bsdf6.inputs[2].default_value = 1.0
 
     # Controlla se esiste già un materiale chiamato "CustomMaterial7"
     mat7 = bpy.data.materials.get("CustomMaterial7")
-    bsdf7 = mat7.node_tree.nodes.get("Principled BSDF")
+    bsdf7 = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
     if bsdf7:
-        bsdf7.inputs['Base Color'].default_value = (color7[0], color7[1], color7[2], 1)
-        bsdf7.inputs['Roughness'].default_value = 1.0
+        bsdf7.inputs[0].default_value = (color7[0], color7[1], color7[2], 1)
+        bsdf7.inputs[2].default_value = 1.0
 
     # Controlla se esiste già un materiale chiamato "CustomMaterial8"
     mat8 = bpy.data.materials.get("CustomMaterial8")
-    bsdf8 = mat8.node_tree.nodes.get("Principled BSDF")
+    bsdf8 = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
     if bsdf8:
-        bsdf8.inputs['Base Color'].default_value = (color8[0], color8[1], color8[2], 1)
-        bsdf8.inputs['Roughness'].default_value = 1.0
+        bsdf8.inputs[0].default_value = (color8[0], color8[1], color8[2], 1)
+        bsdf8.inputs[2].default_value = 1.0
 
-def assign_uncertainty_level(level):            
+def assign_uncertainty_level(level): 
+               
+    percentage_range = {
+    1: (0, 14.285),
+    2: (14.285, 28.571),
+    3: (28.571, 42.857),
+    4: (42.857, 57.143),
+    5: (57.143, 71.428),
+    6: (71.428, 85.714),
+    7: (85.714, 100)
+    }
+    
     percentage_map = {
-    1: 7.143,
-    2: 21.429,
-    3: 35.714,
-    4: 50,
-    5: 64.286,
-    6: 78.571,
-    7: 92.857
+    1: (percentage_range[1][0] + percentage_range[1][1])/2,
+    2: (percentage_range[2][0] + percentage_range[2][1])/2,
+    3: (percentage_range[3][0] + percentage_range[3][1])/2,
+    4: (percentage_range[4][0] + percentage_range[4][1])/2,
+    5: (percentage_range[5][0] + percentage_range[5][1])/2,
+    6: (percentage_range[6][0] + percentage_range[6][1])/2,
+    7: (percentage_range[7][0] + percentage_range[7][1])/2
     }
     
     for obj in bpy.context.selected_objects:
@@ -158,10 +170,10 @@ class SimpleOperator1(bpy.types.Operator):
             mat = bpy.data.materials.new(name="CustomMaterial1")
             mat.use_nodes = True
         
-        bsdf = mat.node_tree.nodes.get("Principled BSDF")
+        bsdf = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
         if bsdf:
-            bsdf.inputs['Base Color'].default_value = (color[0], color[1], color[2], 1)
-            bsdf.inputs['Roughness'].default_value = 1.0
+            bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
+            bsdf.inputs[2].default_value = 1.0
         
         for obj in selected_objects:
             if obj.type == 'MESH':
@@ -187,10 +199,10 @@ class SimpleOperator2(bpy.types.Operator):
             mat = bpy.data.materials.new(name="CustomMaterial2")
             mat.use_nodes = True
         
-        bsdf = mat.node_tree.nodes.get("Principled BSDF")
+        bsdf = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
         if bsdf:
-            bsdf.inputs['Base Color'].default_value = (color[0], color[1], color[2], 1)
-            bsdf.inputs['Roughness'].default_value = 1.0
+            bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
+            bsdf.inputs[2].default_value = 1.0
         
         for obj in selected_objects:
             if obj.type == 'MESH':
@@ -215,10 +227,10 @@ class SimpleOperator3(bpy.types.Operator):
             mat = bpy.data.materials.new(name="CustomMaterial3")
             mat.use_nodes = True
         
-        bsdf = mat.node_tree.nodes.get("Principled BSDF")
+        bsdf = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
         if bsdf:
-            bsdf.inputs['Base Color'].default_value = (color[0], color[1], color[2], 1)
-            bsdf.inputs['Roughness'].default_value = 1.0
+            bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
+            bsdf.inputs[2].default_value = 1.0
         
         for obj in selected_objects:
             if obj.type == 'MESH':
@@ -244,10 +256,10 @@ class SimpleOperator4(bpy.types.Operator):
             mat = bpy.data.materials.new(name="CustomMaterial4")
             mat.use_nodes = True
         
-        bsdf = mat.node_tree.nodes.get("Principled BSDF")
+        bsdf = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
         if bsdf:
-            bsdf.inputs['Base Color'].default_value = (color[0], color[1], color[2], 1)
-            bsdf.inputs['Roughness'].default_value = 1.0
+            bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
+            bsdf.inputs[2].default_value = 1.0
         
         for obj in selected_objects:
             if obj.type == 'MESH':
@@ -272,10 +284,10 @@ class SimpleOperator5(bpy.types.Operator):
             mat = bpy.data.materials.new(name="CustomMaterial5")
             mat.use_nodes = True
         
-        bsdf = mat.node_tree.nodes.get("Principled BSDF")
+        bsdf = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
         if bsdf:
-            bsdf.inputs['Base Color'].default_value = (color[0], color[1], color[2], 1)
-            bsdf.inputs['Roughness'].default_value = 1.0
+            bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
+            bsdf.inputs[2].default_value = 1.0
         
         for obj in selected_objects:
             if obj.type == 'MESH':
@@ -301,10 +313,10 @@ class SimpleOperator6(bpy.types.Operator):
             mat = bpy.data.materials.new(name="CustomMaterial6")
             mat.use_nodes = True
         
-        bsdf = mat.node_tree.nodes.get("Principled BSDF")
+        bsdf = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
         if bsdf:
-            bsdf.inputs['Base Color'].default_value = (color[0], color[1], color[2], 1)
-            bsdf.inputs['Roughness'].default_value = 1.0
+            bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
+            bsdf.inputs[2].default_value = 1.0
         
         for obj in selected_objects:
             if obj.type == 'MESH':
@@ -329,10 +341,10 @@ class SimpleOperator7(bpy.types.Operator):
             mat = bpy.data.materials.new(name="CustomMaterial7")
             mat.use_nodes = True
         
-        bsdf = mat.node_tree.nodes.get("Principled BSDF")
+        bsdf = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
         if bsdf:
-            bsdf.inputs['Base Color'].default_value = (color[0], color[1], color[2], 1)
-            bsdf.inputs['Roughness'].default_value = 1.0
+            bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
+            bsdf.inputs[2].default_value = 1.0
         
         for obj in selected_objects:
             if obj.type == 'MESH':
@@ -358,10 +370,10 @@ class SimpleOperator8(bpy.types.Operator):
             mat = bpy.data.materials.new(name="CustomMaterial8")
             mat.use_nodes = True
         
-        bsdf = mat.node_tree.nodes.get("Principled BSDF")
+        bsdf = next((node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED'), None)
         if bsdf:
-            bsdf.inputs['Base Color'].default_value = (color[0], color[1], color[2], 1)
-            bsdf.inputs['Roughness'].default_value = 1.0
+            bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
+            bsdf.inputs[2].default_value = 1.0
         
         for obj in selected_objects:
             if obj.type == 'MESH':
