@@ -21,11 +21,10 @@ Refer to the following table for the full description of each Level of Uncertain
 <img src="https://github.com/user-attachments/assets/1b5756ad-88ba-42d3-89b5-e38b6db0fbc5" alt="Scale of Uncertainty Levels descritions" width="700" height="">
 
 The mathematical formulas used to calculate the AU_V and AU_VR are reported below:
-<img src="https://github.com/user-attachments/assets/2b9be003-1f6a-4b98-9d0a-fa9bc38a4b7" alt="AUV_AUVR Formulas" width="500" height="">
+<img src="https://github.com/user-attachments/assets/ac0c8f2c-1316-43b7-9ea1-061d6a008e3f" alt="AUV_AUVR Formulas" width="500" height="">
 
 It is important to note that higher uncertainty in hypothetical reconstructions does not imply lower scientific value; well-documented high-uncertainty models can enhance understanding by critically integrating diverse sources and advancing scientific discourse. Nevertheless since the two formulas AU_V and AU_VR represents the extreme synthetis of the complex process of Uncertainty assessing, they have not to be considered self sufficient, but complementary to a proper documentation of the reconstruction process and visualization:
  
-
 
 BIBLIOGRAFIC REFERENCES:
 
