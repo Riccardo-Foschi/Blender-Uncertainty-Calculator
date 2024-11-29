@@ -8,6 +8,14 @@ How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to
 
 ![Tutorial](https://github.com/user-attachments/assets/9ef0fc0c-ff82-4b90-b5fa-1770fb8df2a2)
 
+![YES/NO Flow Chart](https://github.com/user-attachments/assets/14ff314c-132e-4539-b206-ca6142247d37)
+
+![Example of false colour view](https://github.com/user-attachments/assets/0b6edead-6975-40bd-a83e-61b7f02e4e50)
+
+![Scale of Uncertainty Levels descritions](https://github.com/user-attachments/assets/1b5756ad-88ba-42d3-89b5-e38b6db0fbc5)
+
+![AUV_AUVR Formulas](https://github.com/user-attachments/assets/2b9be003-1f6a-4b98-9d0a-fa9bc38a4b74)
+
 
 BIBLIOGRAFIC REFERENCES:
 
