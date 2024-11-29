@@ -6,7 +6,7 @@ How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to
 
 ![image](https://github.com/user-attachments/assets/6e354786-3ca5-4855-a36d-bbe82779feaf)
 
-![Tutorial](https://github.com/user-attachments/assets/9ef0fc0c-ff82-4b90-b5fa-1770fb8df2a2)
+![Tutorial](https://github.com/user-attachments/assets/3934c39d-c9fc-48a2-9bd6-f4580afb1195)
 
 ![YES/NO Flow Chart](https://github.com/user-attachments/assets/14ff314c-132e-4539-b206-ca6142247d37)
 
