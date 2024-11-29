@@ -5,7 +5,7 @@ Blender plugin for uncertainty assessment of hypotetical 3D reconstruction of lo
 
 How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to the "AU_VR.py" python script downloaded from the link above -> the plugin will appear on the sidebar in the newly created "Uncertainty" tab.
 
-<img src="https://github.com/user-attachments/assets/6e354786-3ca5-4855-a36d-bbe82779feaf" alt="install plugin" width="400" height="300">
+<img src="https://github.com/user-attachments/assets/6e354786-3ca5-4855-a36d-bbe82779feaf" alt="install plugin" width="400" height="">
 
 
 The following image explains the plugin tabs and buttons:
