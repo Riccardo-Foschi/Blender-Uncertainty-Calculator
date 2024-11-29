@@ -5,7 +5,7 @@ bl_info = {
     "category": "Model Analysis",
     "author": "Riccardo Foschi and Chat GPT",
     "description": "Allows to calculate the average uncertainty weighted with the volume (AU_V) and the average uncertainty weighted with the volume and relevance (AU_VR) for hypothetical 3D architectural reconstruction models",
-    "version": (2, 3, 1),
+    "version": (2, 3, 3),
 }
 
 import bpy
@@ -131,6 +131,7 @@ def reset_uncertainty_level():
 class ResetColorsToDefaults(bpy.types.Operator):
     bl_idname = "object.reset_colors_to_defaults"
     bl_label = "Reset colors to defaults"
+    bl_description = "Reset the colours to the default White, Blue, Cyan, Green, Yellow, Orange, Red, and Black"
 
     def execute(self, context):
         
@@ -156,9 +157,12 @@ class ResetColorsToDefaults(bpy.types.Operator):
         
         return {'FINISHED'}
 
+# Assign Uncertainty 1
+
 class SimpleOperator1(bpy.types.Operator):
     bl_idname = "object.apply_material1"
     bl_label = "Apply Material 1"
+    bl_description = "The analysed feature of the 3D model is derived mainly from good-quality, REALITY-BASED DATA which reach the target LoD"
             
     def execute(self, context):
         selected_objects = context.selected_objects
@@ -183,10 +187,13 @@ class SimpleOperator1(bpy.types.Operator):
                     obj.data.materials.append(mat)
             assign_uncertainty_level(1)                
         return {'FINISHED'}
+    
+# Assign Uncertainty 2
 
 class SimpleOperator2(bpy.types.Operator):
     bl_idname = "object.apply_material2"
     bl_label = "Apply Material 2"
+    bl_description = "Reliable conjecture based mainly on clear and accurate DIRECT/PRIMARY SOURCES which reach the target LoD. When REALITY-BASED DATA are unavailable, available but unusable, or not reaching the target LoD"
     
     def execute(self, context):
         selected_objects = context.selected_objects
@@ -212,10 +219,13 @@ class SimpleOperator2(bpy.types.Operator):
                     obj.data.materials.append(mat)
             assign_uncertainty_level(2)        
         return {'FINISHED'}
+    
+# Assign Uncertainty 3    
 
 class SimpleOperator3(bpy.types.Operator):
     bl_idname = "object.apply_material3"
     bl_label = "Apply Material 3"
+    bl_description = "Conjecture based mainly on INDIRECT/SECONDARY SOURCES, by the SAME AUTHOR/S, which reach the target LoD, or logic deduction/selection of variants. When DIRECT/PRIMARY SOURCES ARE AVAILABLE, but minimally unclear, damaged, inconsistent, inaccurate, or not reaching the target LoD"
     
     def execute(self, context):
         selected_objects = context.selected_objects
@@ -240,10 +250,13 @@ class SimpleOperator3(bpy.types.Operator):
                     obj.data.materials.append(mat)
             assign_uncertainty_level(3)          
         return {'FINISHED'}
+    
+# Assign Uncertainty 4    
 
 class SimpleOperator4(bpy.types.Operator):
     bl_idname = "object.apply_material4"
     bl_label = "Apply Material 4"
+    bl_description = "Conjecture based mainly on INDIRECT/SECONDARY sources by DIFFERENT AUTHOR/S (or unknown authors) which reach the target LoD. When DIRECT/PRIMARY SOURCES ARE AVAILABLE, but minimally unclear, damaged, inconsistent, inaccurate, or not reaching the target LoD"
     
     def execute(self, context):
         selected_objects = context.selected_objects
@@ -269,10 +282,13 @@ class SimpleOperator4(bpy.types.Operator):
                     obj.data.materials.append(mat)
             assign_uncertainty_level(4)          
         return {'FINISHED'}
+    
+# Assign Uncertainty 5
 
 class SimpleOperator5(bpy.types.Operator):
     bl_idname = "object.apply_material5"
     bl_label = "Apply Material 5"
+    bl_description = "Conjecture based mainly on INDIRECT/SECONDARY SOURCES by the SAME AUTHOR/S which reach the target LoD. When DIRECT/PRIMARY SOURCES ARE NOT AVAILABLE or unusable "
     
     def execute(self, context):
         selected_objects = context.selected_objects
@@ -297,10 +313,13 @@ class SimpleOperator5(bpy.types.Operator):
                     obj.data.materials.append(mat)
             assign_uncertainty_level(5)          
         return {'FINISHED'}
+    
+# Assign Uncertainty 6
 
 class SimpleOperator6(bpy.types.Operator):
     bl_idname = "object.apply_material6"
     bl_label = "Apply Material 6"
+    bl_description = "Conjecture based mainly on INDIRECT/SECONDARY sources by DIFFERENT AUTHOR/S (or unknown authors) which reach the target LoD. When DIRECT/PRIMARY SOURCES ARE NOT AVAILABLE or unusable"
     
     def execute(self, context):
         selected_objects = context.selected_objects
@@ -327,9 +346,12 @@ class SimpleOperator6(bpy.types.Operator):
             assign_uncertainty_level(6)          
         return {'FINISHED'}
 
+# Assign Uncertainty 7
+
 class SimpleOperator7(bpy.types.Operator):
     bl_idname = "object.apply_material7"
     bl_label = "Apply Material 7"
+    bl_description = "Conjecture based mainly on personal knowledge due to missing or UNREFERENCED SOURCES"
     
     def execute(self, context):
         selected_objects = context.selected_objects
@@ -355,9 +377,12 @@ class SimpleOperator7(bpy.types.Operator):
             assign_uncertainty_level(7)          
         return {'FINISHED'}
 
+# Assign Abstention (remove uncertainty)
+
 class SimpleOperator8(bpy.types.Operator):
     bl_idname = "object.apply_material8"
     bl_label = "Apply Material 8"
+    bl_description = "Not relevant, not considered, left unsolved, missing data, and missing conjecture (does not count for the calculation of the average uncertainty). By clicking this button the Custom properties previously assigned to the object will be removed"
     
     def execute(self, context):
         selected_objects = context.selected_objects
@@ -472,9 +497,12 @@ def reset_relevance_factor():
                 del obj["Relevance"]
     bpy.context.view_layer.update()
 
+#Assign Relevance
+
 class AssignRelevance(bpy.types.Operator):
     bl_idname = "object.assign_relevance"
     bl_label = "Assign Relevance"
+    bl_description = "Creates a Custom Property called Relevance in the Custom Properties tab of the selected objects"
 
     def execute(self, context):
         factor = context.scene.relevance_factor
@@ -483,9 +511,12 @@ class AssignRelevance(bpy.types.Operator):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
 
+#Remove Relevance
+
 class ResetRelevance(bpy.types.Operator):
     bl_idname = "object.reset_relevance"
     bl_label = "Reset Relevance"
+    bl_description = "Remove the 'Relevance' Custom Property from the selected objects"
 
     def execute(self, context):
         reset_relevance_factor()
@@ -523,9 +554,13 @@ def reset_volume():
                 del obj["Volume"]
     bpy.context.view_layer.update()
 
+#Apply Scale to Selection
+
 class ApplyScaleSelection(bpy.types.Operator):
     bl_idname = "object.apply_scale_selection"
     bl_label = "Apply Scale of Selection"
+    bl_description = "Apply the Scale to the Selected object. This operation is crucial to achieve a correct calculation of the Volume"
+
 
     def execute(self, context):
         apply_scale_selection(self)
@@ -533,10 +568,13 @@ class ApplyScaleSelection(bpy.types.Operator):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
 
+#Calculate Volume of Selection
+
 class CalculateVolume(bpy.types.Operator):
     bl_idname = "object.calculate_volume"
     bl_label = "Calculate Volume of selection"
-
+    bl_description = "Calculate the individual Volume of the Selected objects. The selected objects must be closed watertight manifold meshes and must not intersect with each other. If the meshes were resized remember to apply the scale before calculating their volume"
+    
     def execute(self, context):
         if bpy.context.selected_objects:     
             for obj in bpy.context.selected_objects:
@@ -548,9 +586,12 @@ class CalculateVolume(bpy.types.Operator):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
 
+# Reset Volume of Selection
+
 class ResetVolume(bpy.types.Operator):
     bl_idname = "object.reset_volume"
     bl_label = "Reset Volume"
+    bl_description = "Remove the Volume Custom Property from the selected objects"
 
     def execute(self, context):
         if bpy.context.selected_objects:  
@@ -566,8 +607,6 @@ class ResetVolume(bpy.types.Operator):
 
 #region Calculate AU_V and AU_VR
    
-#def calculate AU_V and AU_VR
-
 def calculate_average_uncertainty(self):
     total_volume = 0
     weighted_sum = 0
@@ -617,9 +656,12 @@ def calculate_average_uncertainty_with_relevance(self):
     au_vr = weighted_sum / total_volume
     return au_vr
 
+# Calculate Average Uncertainty Weighted on the Volume AU_V
+
 class CalculateAUV(bpy.types.Operator):
     bl_idname = "object.calculate_au_v"
     bl_label = "Calculate AU_V"
+    bl_description = "Calculate the Average Uncertainty Weighted on the Volume (AU_V) for the entire scene (it will only consider the object with an Uncertainty Level assigned)"
 
     def execute(self, context):    
         au_v = calculate_average_uncertainty(self)
@@ -628,9 +670,12 @@ class CalculateAUV(bpy.types.Operator):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
 
+#Calculate Average Uncertainty Weighted on the Volume AU_VR
+
 class CalculateAUVR(bpy.types.Operator):
     bl_idname = "object.calculate_au_vr"
     bl_label = "Calculate AU_VR"
+    bl_description = "Calculate the Average Uncertainty Weighted on the Volume and Relevance (AU_VR) for the entire scene (it will only consider the object with an Uncertainty Level assigned). If the relevance factors of each object are equal the result will match AU_V"
 
     def execute(self, context):
         au_vr = calculate_average_uncertainty_with_relevance(self)
@@ -647,6 +692,7 @@ class CalculateAUVR(bpy.types.Operator):
 class SelectByUncertainty(bpy.types.Operator):
     bl_idname = "object.select_by_uncertainty"
     bl_label = "Select by Uncertainty"
+    bl_description = "Select all the objects assigned to the corresponding Uncertainty Level"
 
     level: bpy.props.IntProperty()
 
@@ -674,49 +720,49 @@ class Assign(bpy.types.Panel):
         mytool = scene.my_tool
 
         box1 = layout.box()
-        box1.label(text="Assign Uncertainty level") 
+        box1.label(text="Assign Uncertainty Level") 
 
         row = box1.row(align=True)
         row.prop(mytool, "color1", text="")
         sub = row.row()
         sub.scale_x = 2.0
-        sub.operator("object.apply_material1", text="Uncertainty 1")
+        sub.operator("object.apply_material1", text="Uncertainty 1 (0–14%)")
 
         row = box1.row(align=True)
         row.prop(mytool, "color2", text="")
         sub = row.row()
         sub.scale_x = 2.0
-        sub.operator("object.apply_material2", text="Uncertainty 2")
+        sub.operator("object.apply_material2", text="Uncertainty 2 (14–28%)")
 
         row = box1.row(align=True)
         row.prop(mytool, "color3", text="")
         sub = row.row()
         sub.scale_x = 2.0
-        sub.operator("object.apply_material3", text="Uncertainty 3")
+        sub.operator("object.apply_material3", text="Uncertainty 3 (28–43%)")
 
         row = box1.row(align=True)
         row.prop(mytool, "color4", text="")
         sub = row.row()
         sub.scale_x = 2.0
-        sub.operator("object.apply_material4", text="Uncertainty 4")
+        sub.operator("object.apply_material4", text="Uncertainty 4 (43–57%)")
 
         row = box1.row(align=True)
         row.prop(mytool, "color5", text="")
         sub = row.row()
         sub.scale_x = 2.0
-        sub.operator("object.apply_material5", text="Uncertainty 5")
+        sub.operator("object.apply_material5", text="Uncertainty 5 (57–71%)")
 
         row = box1.row(align=True)
         row.prop(mytool, "color6", text="")
         sub = row.row()
         sub.scale_x = 2.0
-        sub.operator("object.apply_material6", text="Uncertainty 6")
+        sub.operator("object.apply_material6", text="Uncertainty 6 (71–86%)")
 
         row = box1.row(align=True)
         row.prop(mytool, "color7", text="")
         sub = row.row()
         sub.scale_x = 2.0
-        sub.operator("object.apply_material7", text="Uncertainty 7")
+        sub.operator("object.apply_material7", text="Uncertainty 7 (86–100%)")
 
         row = box1.row(align=True)
         row.prop(mytool, "color8", text="")
@@ -845,13 +891,7 @@ def register():
 #region Relevance   
     bpy.utils.register_class(AssignRelevance)
     bpy.utils.register_class(ResetRelevance)
-    bpy.types.Scene.relevance_factor = bpy.props.FloatProperty(
-    name="Relevance Factor",
-    description="Relevance Factor",
-    default=1.0,
-    min=0.01,
-    max=100.0
-    )
+    bpy.types.Scene.relevance_factor = bpy.props.FloatProperty(name="Relevance Factor", description="Set a factor bigger or smaller than 1.00 in order to change the importance/weight of some architectural elements in the calculation of the AU_VR. For example the classical orders could have a relevance factor of 10; or the walls of the cellars could have a relevance factor of 0.1", default=1.0, min=0.01, max=100.0)
 #endregion
     
     
