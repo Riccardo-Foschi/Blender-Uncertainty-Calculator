@@ -9,7 +9,7 @@ How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to
 
 
 The following image explains the plugin tabs and buttons:
-![Tutorial](https://github.com/user-attachments/assets/3934c39d-c9fc-48a2-9bd6-f4580afb1195)
+<img src="https://github.com/user-attachments/assets/3934c39d-c9fc-48a2-9bd6-f4580afb1195" alt="Tutorial" width="6000" height="">
 
 Use the following image as an aid to assign the correct Uncertainty Level:
 ![YES/NO Flow Chart](https://github.com/user-attachments/assets/14ff314c-132e-4539-b206-ca6142247d37)
