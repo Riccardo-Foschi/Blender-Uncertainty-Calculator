@@ -11,8 +11,9 @@ How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to
 When exporting from another software pay particular attention to exporting close watertight manifold solids. If the solid meshes have unwelded vertices the volume calculation might give unexpected results (if a very minor part of the edges is unwelded the volume might still be calculated correctly, but it is not guaranteed, so to avoid any error it is better to check import-export options and test various formats) in the following image you can see the suggested option to export from McNeel Rhinoceros to Blender in glTF and Glb exchange formats.
 <img src="https://github.com/user-attachments/assets/a8ade583-57fb-46f3-b462-4c6bb5088957" alt="export from rhino to blender" width="600" height="">
 
+
 The following image explains the plugin tabs and buttons:
-<img src="https://github.com/user-attachments/assets/3934c39d-c9fc-48a2-9bd6-f4580afb1195" alt="Tutorial" width="800" height="">
+<img src="https://github.com/user-attachments/assets/ee99f5c0-d2e1-42e5-8321-436bc8fe5541" alt="Tutorial" width="800" height="">
 
 Use the following image as an aid to assign the correct Uncertainty Level:
 <img src="https://github.com/user-attachments/assets/14ff314c-132e-4539-b206-ca6142247d37" alt="YES/NO Flow Chart" width="800" height="">
