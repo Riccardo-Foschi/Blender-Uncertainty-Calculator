@@ -5,7 +5,7 @@ bl_info = {
     "category": "Model Analysis",
     "author": "Riccardo Foschi and Chat GPT",
     "description": "Allows to calculate the average uncertainty weighted with the volume (AU_V) and the average uncertainty weighted with the volume and relevance (AU_VR) for hypothetical 3D architectural reconstruction models",
-    "version": (2, 3, 3),
+    "version": (2, 3, 6),
 }
 
 import bpy
@@ -131,7 +131,7 @@ def reset_uncertainty_level():
 class ResetColorsToDefaults(bpy.types.Operator):
     bl_idname = "object.reset_colors_to_defaults"
     bl_label = "Reset colors to defaults"
-    bl_description = "Reset the colours to the default White, Blue, Cyan, Green, Yellow, Orange, Red, and Black"
+    bl_description = "Reset the colours of the scale to the default colours (White, Blue, Cyan, Green, Yellow, Orange, Red, and Black). If the scale colours were not personalised nothing will happen"
 
     def execute(self, context):
         
@@ -155,11 +155,72 @@ class ResetColorsToDefaults(bpy.types.Operator):
         context.scene.my_tool.color7 = color_map[7]
         context.scene.my_tool.color8 = color_map[8]
         
+        self.report({'INFO'}, "The colours of the scale were reset to White, Blue, Cyan, Green, Yellow, Orange, Red") 
+        
         return {'FINISHED'}
+
+
+# Remove all materials from scene objects
+
+class RemoveMaterials(bpy.types.Operator):
+    bl_idname = "object.remove_materials"
+    bl_label = "Remove all materials and slots"
+    bl_description = "Remove all the materials and material slots from the selected objects, the default material will be applied"
+    
+    def execute(self, context):
+        selected_objects = bpy.context.selected_objects 
+               
+
+        #verifica che ci siano oggetti selezionati        
+        if not selected_objects:
+            self.report({'ERROR'}, "Select something first!")
+            return {"CANCELLED"}
+        
+        # Itera sugli oggetti selezionati    
+        for obj in selected_objects:
+            if obj.type == 'MESH':  # Assicurati che l'oggetto sia una mesh
+                obj.data.materials.clear()  # Elimina tutti i material slots
+        self.report({'INFO'}, "Materials and materials slots removed successfully!")
+        return {'FINISHED'}
+    
+    
+#Remove all custom properties from selected objects
+
+def clear_custom_properties_for_selected_objects(self, context):
+    selected_objects = bpy.context.selected_objects
+    
+    if not selected_objects:
+        self.report({'ERROR'}, "Select something first!")
+        return {"CANCELLED"}
+    
+    for obj in selected_objects:
+        if hasattr(obj, "keys"):
+            for prop in list(obj.keys()):
+                if prop not in {"_RNA_UI"}:
+                    del obj[prop]  
+        bpy.context.view_layer.update()                    
+
+    for area in bpy.context.window.screen.areas:
+        if area.type == 'PROPERTIES':  # Riferito all'editor delle proprietà
+            area.tag_redraw()
+            
+    return {"FINISHED"}
+
+class ClearCustomProperties(bpy.types.Operator):
+    bl_label = "Clear Custom Properties from selection"
+    bl_idname = "object.clear_custom_properties"
+    bl_description = "Remove all the custom properties from the selected objects"
+    
+    def execute(self, context):
+        clear_custom_properties_for_selected_objects(self, context)
+        self.report({'INFO'}, "Custom properties erased from all the selected objects successfully!")  
+        bpy.context.area.tag_redraw()
+        return {'FINISHED'}
+
 
 # Assign Uncertainty 1
 
-class SimpleOperator1(bpy.types.Operator):
+class AssignUncert1(bpy.types.Operator):
     bl_idname = "object.apply_material1"
     bl_label = "Apply Material 1"
     bl_description = "The analysed feature of the 3D model is derived mainly from good-quality, REALITY-BASED DATA which reach the target LoD"
@@ -178,19 +239,22 @@ class SimpleOperator1(bpy.types.Operator):
         if bsdf:
             bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
             bsdf.inputs[2].default_value = 1.0
-        
-        for obj in selected_objects:
-            if obj.type == 'MESH':
-                if obj.data.materials:
-                    obj.data.materials[0] = mat
-                else:
-                    obj.data.materials.append(mat)
-            assign_uncertainty_level(1)                
+        if selected_objects:        
+            for obj in selected_objects:
+
+                    if obj.type == 'MESH':
+                        if obj.data.materials:
+                            obj.data.materials[0] = mat
+                        else:
+                            obj.data.materials.append(mat)
+                        assign_uncertainty_level(1) 
+        else:
+            self.report({'ERROR'}, "Select something first!")
         return {'FINISHED'}
     
 # Assign Uncertainty 2
 
-class SimpleOperator2(bpy.types.Operator):
+class AssignUncert2(bpy.types.Operator):
     bl_idname = "object.apply_material2"
     bl_label = "Apply Material 2"
     bl_description = "Reliable conjecture based mainly on clear and accurate DIRECT/PRIMARY SOURCES which reach the target LoD. When REALITY-BASED DATA are unavailable, available but unusable, or not reaching the target LoD"
@@ -211,18 +275,22 @@ class SimpleOperator2(bpy.types.Operator):
             bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
             bsdf.inputs[2].default_value = 1.0
         
-        for obj in selected_objects:
-            if obj.type == 'MESH':
-                if obj.data.materials:
-                    obj.data.materials[0] = mat
-                else:
-                    obj.data.materials.append(mat)
-            assign_uncertainty_level(2)        
+        if selected_objects:        
+            for obj in selected_objects:
+
+                    if obj.type == 'MESH':
+                        if obj.data.materials:
+                            obj.data.materials[0] = mat
+                        else:
+                            obj.data.materials.append(mat)
+                        assign_uncertainty_level(2) 
+        else:
+            self.report({'ERROR'}, "Select something first!")
         return {'FINISHED'}
     
 # Assign Uncertainty 3    
 
-class SimpleOperator3(bpy.types.Operator):
+class AssignUncert3(bpy.types.Operator):
     bl_idname = "object.apply_material3"
     bl_label = "Apply Material 3"
     bl_description = "Conjecture based mainly on INDIRECT/SECONDARY SOURCES, by the SAME AUTHOR/S, which reach the target LoD, or logic deduction/selection of variants. When DIRECT/PRIMARY SOURCES ARE AVAILABLE, but minimally unclear, damaged, inconsistent, inaccurate, or not reaching the target LoD"
@@ -242,18 +310,22 @@ class SimpleOperator3(bpy.types.Operator):
             bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
             bsdf.inputs[2].default_value = 1.0
         
-        for obj in selected_objects:
-            if obj.type == 'MESH':
-                if obj.data.materials:
-                    obj.data.materials[0] = mat
-                else:
-                    obj.data.materials.append(mat)
-            assign_uncertainty_level(3)          
+        if selected_objects:        
+            for obj in selected_objects:
+
+                    if obj.type == 'MESH':
+                        if obj.data.materials:
+                            obj.data.materials[0] = mat
+                        else:
+                            obj.data.materials.append(mat)
+                        assign_uncertainty_level(3) 
+        else:
+            self.report({'ERROR'}, "Select something first!")
         return {'FINISHED'}
     
 # Assign Uncertainty 4    
 
-class SimpleOperator4(bpy.types.Operator):
+class AssignUncert4(bpy.types.Operator):
     bl_idname = "object.apply_material4"
     bl_label = "Apply Material 4"
     bl_description = "Conjecture based mainly on INDIRECT/SECONDARY sources by DIFFERENT AUTHOR/S (or unknown authors) which reach the target LoD. When DIRECT/PRIMARY SOURCES ARE AVAILABLE, but minimally unclear, damaged, inconsistent, inaccurate, or not reaching the target LoD"
@@ -274,18 +346,22 @@ class SimpleOperator4(bpy.types.Operator):
             bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
             bsdf.inputs[2].default_value = 1.0
         
-        for obj in selected_objects:
-            if obj.type == 'MESH':
-                if obj.data.materials:
-                    obj.data.materials[0] = mat
-                else:
-                    obj.data.materials.append(mat)
-            assign_uncertainty_level(4)          
+        if selected_objects:        
+            for obj in selected_objects:
+
+                    if obj.type == 'MESH':
+                        if obj.data.materials:
+                            obj.data.materials[0] = mat
+                        else:
+                            obj.data.materials.append(mat)
+                        assign_uncertainty_level(4) 
+        else:
+            self.report({'ERROR'}, "Select something first!")
         return {'FINISHED'}
     
 # Assign Uncertainty 5
 
-class SimpleOperator5(bpy.types.Operator):
+class AssignUncert5(bpy.types.Operator):
     bl_idname = "object.apply_material5"
     bl_label = "Apply Material 5"
     bl_description = "Conjecture based mainly on INDIRECT/SECONDARY SOURCES by the SAME AUTHOR/S which reach the target LoD. When DIRECT/PRIMARY SOURCES ARE NOT AVAILABLE or unusable "
@@ -305,18 +381,22 @@ class SimpleOperator5(bpy.types.Operator):
             bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
             bsdf.inputs[2].default_value = 1.0
         
-        for obj in selected_objects:
-            if obj.type == 'MESH':
-                if obj.data.materials:
-                    obj.data.materials[0] = mat
-                else:
-                    obj.data.materials.append(mat)
-            assign_uncertainty_level(5)          
+        if selected_objects:        
+            for obj in selected_objects:
+
+                    if obj.type == 'MESH':
+                        if obj.data.materials:
+                            obj.data.materials[0] = mat
+                        else:
+                            obj.data.materials.append(mat)
+                        assign_uncertainty_level(5) 
+        else:
+            self.report({'ERROR'}, "Select something first!")
         return {'FINISHED'}
     
 # Assign Uncertainty 6
 
-class SimpleOperator6(bpy.types.Operator):
+class AssignUncert6(bpy.types.Operator):
     bl_idname = "object.apply_material6"
     bl_label = "Apply Material 6"
     bl_description = "Conjecture based mainly on INDIRECT/SECONDARY sources by DIFFERENT AUTHOR/S (or unknown authors) which reach the target LoD. When DIRECT/PRIMARY SOURCES ARE NOT AVAILABLE or unusable"
@@ -337,18 +417,22 @@ class SimpleOperator6(bpy.types.Operator):
             bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
             bsdf.inputs[2].default_value = 1.0
         
-        for obj in selected_objects:
-            if obj.type == 'MESH':
-                if obj.data.materials:
-                    obj.data.materials[0] = mat
-                else:
-                    obj.data.materials.append(mat)
-            assign_uncertainty_level(6)          
+        if selected_objects:        
+            for obj in selected_objects:
+
+                    if obj.type == 'MESH':
+                        if obj.data.materials:
+                            obj.data.materials[0] = mat
+                        else:
+                            obj.data.materials.append(mat)
+                        assign_uncertainty_level(6) 
+        else:
+            self.report({'ERROR'}, "Select something first!")
         return {'FINISHED'}
 
 # Assign Uncertainty 7
 
-class SimpleOperator7(bpy.types.Operator):
+class AssignUncert7(bpy.types.Operator):
     bl_idname = "object.apply_material7"
     bl_label = "Apply Material 7"
     bl_description = "Conjecture based mainly on personal knowledge due to missing or UNREFERENCED SOURCES"
@@ -368,18 +452,22 @@ class SimpleOperator7(bpy.types.Operator):
             bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
             bsdf.inputs[2].default_value = 1.0
         
-        for obj in selected_objects:
-            if obj.type == 'MESH':
-                if obj.data.materials:
-                    obj.data.materials[0] = mat
-                else:
-                    obj.data.materials.append(mat)
-            assign_uncertainty_level(7)          
+        if selected_objects:        
+            for obj in selected_objects:
+
+                    if obj.type == 'MESH':
+                        if obj.data.materials:
+                            obj.data.materials[0] = mat
+                        else:
+                            obj.data.materials.append(mat)
+                        assign_uncertainty_level(7) 
+        else:
+            self.report({'ERROR'}, "Select something first!")
         return {'FINISHED'}
 
 # Assign Abstention (remove uncertainty)
 
-class SimpleOperator8(bpy.types.Operator):
+class AssignUncert8(bpy.types.Operator):
     bl_idname = "object.apply_material8"
     bl_label = "Apply Material 8"
     bl_description = "Not relevant, not considered, left unsolved, missing data, and missing conjecture (does not count for the calculation of the average uncertainty). By clicking this button the Custom properties previously assigned to the object will be removed"
@@ -399,15 +487,19 @@ class SimpleOperator8(bpy.types.Operator):
         if bsdf:
             bsdf.inputs[0].default_value = (color[0], color[1], color[2], 1)
             bsdf.inputs[2].default_value = 1.0
-        
-        for obj in selected_objects:
-            if obj.type == 'MESH':
-                if obj.data.materials:
-                    obj.data.materials[0] = mat
-                else:
-                    obj.data.materials.append(mat)
-            reset_uncertainty_level()          
+
+        if selected_objects:        
+            for obj in selected_objects:
+                if obj.type == 'MESH':
+                    if obj.data.materials:
+                        obj.data.materials[0] = mat
+                    else:
+                        obj.data.materials.append(mat)
+                reset_uncertainty_level()
+        else:
+            self.report({'ERROR'}, "Select something first!")
         return {'FINISHED'}
+
 
 class ColorProperties(bpy.types.PropertyGroup):
     color1: FloatVectorProperty(
@@ -527,15 +619,7 @@ class ResetRelevance(bpy.types.Operator):
 #endregion
 
 
-#region Calculate volume
-
-def apply_scale_selection(self): 
-    if bpy.context.selected_objects:
-        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-        self.report({'INFO'}, "Scale correctly applied")                
-    else:
-        self.report({'ERROR'}, "No object selected")
-    return
+#Calculate Volume of Selection
 
 def calculate_volume(obj, self):
     bm = bmesh.new()
@@ -547,46 +631,46 @@ def calculate_volume(obj, self):
     bpy.context.view_layer.update()
     return
 
+class CalculateVolume(bpy.types.Operator):
+    bl_idname = "object.calculate_volume"
+    bl_label = "All objects must be closed solids, proceed?"
+    bl_description = "Calculate the individual Volume of the Selected objects. The selected objects must be closed watertight manifold meshes and must not intersect with each other. If the meshes were resized remember to apply the scale before calculating their volume"
+
+    def invoke(self, context, event):
+        # Passa l'evento ricevuto come parametro
+        return context.window_manager.invoke_confirm(self, event)
+        
+    def execute(self, context):
+            
+        
+        if bpy.context.selected_objects:     
+            for obj in bpy.context.selected_objects:
+                if obj.type == 'MESH':
+                    calculate_volume(obj, self)           
+        else:
+            self.report({'ERROR'}, "Select something first!")
+            return {'FINISHED'}
+                
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+        
+        find_non_manifold1()
+        find_non_manifold2()
+        
+        if bpy.context.selected_objects:
+            self.report({'ERROR'}, "Some objects are not manifold, Volume calculation might give inaccurate results!")
+            
+        return {'FINISHED'}
+
+
+# Reset Volume of Selection
+
 def reset_volume():
     for obj in bpy.context.selected_objects:
         if obj.type == 'MESH':
             if "Volume" in obj:
                 del obj["Volume"]
     bpy.context.view_layer.update()
-
-#Apply Scale to Selection
-
-class ApplyScaleSelection(bpy.types.Operator):
-    bl_idname = "object.apply_scale_selection"
-    bl_label = "Apply Scale of Selection"
-    bl_description = "Apply the Scale to the Selected object. This operation is crucial to achieve a correct calculation of the Volume"
-
-
-    def execute(self, context):
-        apply_scale_selection(self)
-        
-        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
-        return {'FINISHED'}
-
-#Calculate Volume of Selection
-
-class CalculateVolume(bpy.types.Operator):
-    bl_idname = "object.calculate_volume"
-    bl_label = "Calculate Volume of selection"
-    bl_description = "Calculate the individual Volume of the Selected objects. The selected objects must be closed watertight manifold meshes and must not intersect with each other. If the meshes were resized remember to apply the scale before calculating their volume"
     
-    def execute(self, context):
-        if bpy.context.selected_objects:     
-            for obj in bpy.context.selected_objects:
-                if obj.type == 'MESH':
-                    calculate_volume(obj, self)           
-        else:
-            self.report({'ERROR'}, "No object selected")
-                
-        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
-        return {'FINISHED'}
-
-# Reset Volume of Selection
 
 class ResetVolume(bpy.types.Operator):
     bl_idname = "object.reset_volume"
@@ -598,7 +682,7 @@ class ResetVolume(bpy.types.Operator):
             reset_volume()
         
         else:            
-            self.report({'ERROR'}, "No object selected")
+            self.report({'ERROR'}, "Select something first!")
             
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         return {'FINISHED'}
@@ -687,7 +771,7 @@ class CalculateAUVR(bpy.types.Operator):
 #endregion
 
 
-#region Select
+#region Select by uncertainty
 
 class SelectByUncertainty(bpy.types.Operator):
     bl_idname = "object.select_by_uncertainty"
@@ -705,6 +789,198 @@ class SelectByUncertainty(bpy.types.Operator):
 
 #endregion
 
+#region Select by relevance
+
+class SelectBigRelevance(bpy.types.Operator):
+    bl_idname = "object.select_by_relevance_big"
+    bl_label = "Select by Relevance"
+    bl_description = "Select all the objects with a Relevance property"
+
+    level: bpy.props.IntProperty()
+
+    def execute(self, context):
+        bpy.ops.object.select_all(action='DESELECT')
+        for obj in bpy.data.objects:
+            if "Relevance" in obj and obj["Relevance"] > 1:
+                obj.select_set(True)
+        return {'FINISHED'}
+    
+class SelectSmallRelevance(bpy.types.Operator):
+    bl_idname = "object.select_by_relevance_small"
+    bl_label = "Select by Relevance"
+    bl_description = "Select all the objects with a Relevance property"
+
+    level: bpy.props.IntProperty()
+
+    def execute(self, context):
+        bpy.ops.object.select_all(action='DESELECT')
+        for obj in bpy.data.objects:
+            if "Relevance" in obj and obj["Relevance"] < 1:
+                obj.select_set(True)
+        return {'FINISHED'}
+
+class SelectRelevance1(bpy.types.Operator):
+    bl_idname = "object.select_by_relevance_1"
+    bl_label = "Select by Relevance"
+    bl_description = "Select all the objects with a Relevance property"
+
+    level: bpy.props.IntProperty()
+
+    def execute(self, context):
+        bpy.ops.object.select_all(action='DESELECT')
+        for obj in bpy.data.objects:
+            if "Relevance" in obj and obj["Relevance"] == 1:
+                obj.select_set(True)
+            if "Relevance" not in obj:
+                obj.select_set(True)
+            
+        return {'FINISHED'}
+
+#endregion
+
+
+
+#Apply Scale to Selection
+
+def apply_scale_selection(self): 
+    if bpy.context.selected_objects:
+        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+        self.report({'INFO'}, "Scale correctly applied")                
+    else:
+        self.report({'ERROR'}, "Select something first!")
+    return
+
+class ApplyScaleSelection(bpy.types.Operator):
+    bl_idname = "object.apply_scale_selection"
+    bl_label = "Apply Scale of Selection"
+    bl_description = "Apply the Scale to the Selected object. This operation is crucial to achieve a correct calculation of the Volume"
+
+
+    def execute(self, context):
+        apply_scale_selection(self)
+        
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+        return {'FINISHED'}
+
+#find non manifold objects
+
+#The find non manifold function does not work for objects just imported in the scene, as a workaround I run the 'find_non_manifold1' funciton twice on all objects of the scene before running the actual find_non_manifold2 function, it's a ugly workaround but it works.
+
+def find_non_manifold1():
+
+    for obj in bpy.context.scene.objects:
+        if obj.type == 'MESH':
+
+            bpy.context.view_layer.objects.active = obj  
+            bpy.ops.object.mode_set(mode='EDIT')
+            bpy.ops.mesh.select_all(action='DESELECT')
+            
+            bpy.context.tool_settings.mesh_select_mode = (False, True, False)
+
+            bpy.ops.mesh.select_non_manifold()
+            
+            bpy.ops.object.mode_set(mode='OBJECT')
+    
+    
+    
+def find_non_manifold2():
+    # Initialize an empty list to store objects with non-manifold edges
+    non_manifold_objects = []
+    
+    # Deselect all objects before starting
+    bpy.ops.object.select_all(action='DESELECT')
+
+    # Loop through all objects in the scene
+    for obj in bpy.context.scene.objects:
+        if obj.type == 'MESH':  # Only work with mesh objects
+
+            bpy.context.view_layer.objects.active = obj  # Set active object to the current one
+            bpy.ops.object.mode_set(mode='EDIT')  # Enter edit mode
+            bpy.ops.mesh.select_all(action='DESELECT')
+            
+            # Switch to edge selection mode
+            bpy.context.tool_settings.mesh_select_mode = (False, True, False)
+
+            # Select all non-manifold edges
+            bpy.ops.mesh.select_non_manifold()
+
+                    
+            # Check if there are selected edges
+            selected_edges = len([e for e in obj.data.edges if e.select])  # Count selected edges
+            
+            # If there are selected edges, add the object to the list
+            if selected_edges > 1:
+                non_manifold_objects.append(obj)
+                
+            # Switch back to object mode to inspect selection
+            bpy.ops.object.mode_set(mode='OBJECT')
+
+    # Now select only the objects in the list with non-manifold edges
+    for obj in non_manifold_objects:
+        obj.select_set(True)
+
+    # Force an update of the view layer to ensure selection is updated
+    bpy.context.view_layer.update()
+            
+    # Clear the list after processing
+    non_manifold_objects.clear()
+
+
+class FindNonManifold(bpy.types.Operator):
+    bl_idname = "object.find_non_manifold"
+    bl_label = "Find non manifold"
+    bl_description = "Select all non manifold meshes in the scene"
+    
+    def execute(self, context):
+
+        find_non_manifold1()
+        find_non_manifold2()
+        return{'FINISHED'}
+    
+#endregion
+
+
+#weld vertices in selection
+
+def weld_vertices_in_selected_meshes(self, context, merge_distance=0.001):
+
+    # Filtra gli oggetti per assicurarti che siano mesh
+    selected_meshes = [obj for obj in bpy.context.selected_objects if obj.type == 'MESH']
+    
+    if not selected_meshes:
+        self.report({'ERROR'}, "Select something first!")
+        return
+    
+    for obj in selected_meshes:
+        # enter edit mode
+        bpy.context.view_layer.objects.active = obj
+        bpy.ops.object.mode_set(mode='EDIT')
+        
+        # access the mesh with BMesh
+        bm = bmesh.from_edit_mesh(obj.data)
+        bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=merge_distance)
+        
+        # update mesh and go back to object mode
+        bmesh.update_edit_mesh(obj.data)
+        bpy.ops.object.mode_set(mode='OBJECT')
+      
+
+class WeldVerticesSeleciton(bpy.types.Operator):
+    bl_idname = "object.weld_vertices_in_selection"
+    bl_label = "Weld vertices of selected objects"
+    bl_description = "Weld vertices in selected objects. If this doesn't work, please import or model the non-manifold meshes again"
+    
+    def execute(self, context):
+
+        weld_vertices_in_selected_meshes(self, context, merge_distance=0.001)
+        
+        self.report({'INFO'}, f"Vertex merged in all selected meshes")    
+        print(f"Vertex merged in all selected meshes")
+        return{'FINISHED'} 
+
+#end region
+
+
 #region Draw assign panel
 
 class Assign(bpy.types.Panel):
@@ -712,16 +988,18 @@ class Assign(bpy.types.Panel):
     bl_idname = "OBJECT_PT_test"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_category = "Uncertainty"
+    bl_category = "Uncertainty-7"
+    
     
     def draw(self, context):
         layout = self.layout
         scene = context.scene
         mytool = scene.my_tool
+                     
 
         box1 = layout.box()
         box1.label(text="Assign Uncertainty Level") 
-
+                
         row = box1.row(align=True)
         row.prop(mytool, "color1", text="")
         sub = row.row()
@@ -770,10 +1048,7 @@ class Assign(bpy.types.Panel):
         sub.scale_x = 2.0
         sub.operator("object.apply_material8", text="Abstention")  
         
-        row = box1.row()
-        
-        row = box1.row(align=True)        
-        row.operator("object.reset_colors_to_defaults", text="Reset default colours")  
+     
 
         box2 = layout.box()
         box2.label(text="Assign Relevance Factor")
@@ -785,7 +1060,7 @@ class Assign(bpy.types.Panel):
         sub.operator("object.assign_relevance", text="Assign Relevance") 
                         
         row = box2.row()
-        row.operator("object.reset_relevance", text="Remove Relevance from Selection")
+        row.operator("object.reset_relevance", text="Remove Relevance")
 
 #endregion
 
@@ -796,7 +1071,7 @@ class Calculate(bpy.types.Panel):
     bl_label = "Calculate"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_category = "Uncertainty"
+    bl_category = "Uncertainty-7"
     
 
     def draw(self, context):
@@ -807,13 +1082,11 @@ class Calculate(bpy.types.Panel):
         box1 = layout.box()
         box1.label(text="Calculate Volume")
 
-        row = box1.column()
-        row.operator("object.apply_scale_selection", text="Apply Scale")
-
+        row = box1.row()
         row.operator("object.calculate_volume", text="Calculate Volume")
 
-        row = box1.column()
-        row.operator("object.reset_volume", text="Remove Volume Property")     
+        row = box1.row()
+        row.operator("object.reset_volume", text="Remove Volume")     
         
         
         # Create Box 2
@@ -837,7 +1110,7 @@ class Calculate(bpy.types.Panel):
 class Select(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_category = 'Uncertainty'
+    bl_category = 'Uncertainty-7'
     bl_label = "Select"
 
 
@@ -851,28 +1124,70 @@ class Select(bpy.types.Panel):
                        
         row = box1.row(align=True)
         for i in range(1, 8):
-
             row.operator("object.select_by_uncertainty", text=str(i)).level = i
 
+        box2 = layout.box()
+        box2.label(text="Select by Relevance")
+            
+        row = box2.row(align=True)
+        row.operator("object.select_by_relevance_small", text="Relev<1")
+        row.operator("object.select_by_relevance_1", text="Relev=1")
+        row.operator("object.select_by_relevance_big", text="Relev>1")        
 #endregion
+
+
+#region Draw Utilities panel
+class Utilities(bpy.types.Panel):
+    bl_label = "Utilities"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "Uncertainty-7"
+    
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene 
+        
+        
+        layout.operator("object.reset_colors_to_defaults", text="Reset scale default colours") 
+            
+        layout.operator("object.remove_materials", text="Remove materials")
+
+        layout.operator("object.clear_custom_properties", text="Remove custom properties")
+        
+        layout.operator("object.find_non_manifold", text="Find non-manifold objects")
+        
+        layout.operator("object.weld_vertices_in_selection", text="Weld vertices")  
+        
+        layout.operator("object.apply_scale_selection", text="Apply Scale")
+
+#endregion
+
+
+
+
+
+
  
 #region register & unregister
 
 def register():
     
+
     bpy.utils.register_class(Assign)
     bpy.utils.register_class(Calculate)
     bpy.utils.register_class(Select)
+    bpy.utils.register_class(Utilities)
         
 #region Color
-    bpy.utils.register_class(SimpleOperator1)
-    bpy.utils.register_class(SimpleOperator2)
-    bpy.utils.register_class(SimpleOperator3)
-    bpy.utils.register_class(SimpleOperator4)
-    bpy.utils.register_class(SimpleOperator5)
-    bpy.utils.register_class(SimpleOperator6)
-    bpy.utils.register_class(SimpleOperator7)
-    bpy.utils.register_class(SimpleOperator8)  
+    bpy.utils.register_class(AssignUncert1)
+    bpy.utils.register_class(AssignUncert2)
+    bpy.utils.register_class(AssignUncert3)
+    bpy.utils.register_class(AssignUncert4)
+    bpy.utils.register_class(AssignUncert5)
+    bpy.utils.register_class(AssignUncert6)
+    bpy.utils.register_class(AssignUncert7)
+    bpy.utils.register_class(AssignUncert8)  
     bpy.utils.register_class(ResetColorsToDefaults) 
     bpy.utils.register_class(ColorProperties)
     bpy.types.Scene.my_tool = bpy.props.PointerProperty(type=ColorProperties)
@@ -884,7 +1199,7 @@ def register():
     bpy.types.Scene.color6 = bpy.props.PointerProperty(type=ColorProperties)
     bpy.types.Scene.color7 = bpy.props.PointerProperty(type=ColorProperties)
     bpy.types.Scene.color8 = bpy.props.PointerProperty(type=ColorProperties)
-    #Reset colours at startup
+#Reset colours at startup
     bpy.app.timers.register(execute_reset_colors, first_interval=0.1)
 #endregion
     
@@ -893,7 +1208,11 @@ def register():
     bpy.utils.register_class(ResetRelevance)
     bpy.types.Scene.relevance_factor = bpy.props.FloatProperty(name="Relevance Factor", description="Set a factor bigger or smaller than 1.00 in order to change the importance/weight of some architectural elements in the calculation of the AU_VR. For example the classical orders could have a relevance factor of 10; or the walls of the cellars could have a relevance factor of 0.1", default=1.0, min=0.01, max=100.0)
 #endregion
-    
+
+#region Remove Materials and properties
+    bpy.utils.register_class(RemoveMaterials)
+    bpy.utils.register_class(ClearCustomProperties)
+#endregion
     
 #region Volume
     bpy.utils.register_class(ApplyScaleSelection)
@@ -917,25 +1236,31 @@ def register():
 #endregion
 
 
-#region Select by uncertainty
+#region utils
     bpy.utils.register_class(SelectByUncertainty)
+    bpy.utils.register_class(SelectRelevance1)
+    bpy.utils.register_class(SelectBigRelevance)
+    bpy.utils.register_class(SelectSmallRelevance)
+    bpy.utils.register_class(FindNonManifold)
+    bpy.utils.register_class(WeldVerticesSeleciton)
 #endregion
        
 def unregister():
-    
+
     bpy.utils.unregister_class(Assign)
     bpy.utils.unregister_class(Calculate)
     bpy.utils.unregister_class(Select) 
+    bpy.utils.unregister_class(Utilities)
     
 #region Color
-    bpy.utils.unregister_class(SimpleOperator1)
-    bpy.utils.unregister_class(SimpleOperator2)
-    bpy.utils.unregister_class(SimpleOperator3)
-    bpy.utils.unregister_class(SimpleOperator4)
-    bpy.utils.unregister_class(SimpleOperator5)
-    bpy.utils.unregister_class(SimpleOperator6)
-    bpy.utils.unregister_class(SimpleOperator7)
-    bpy.utils.unregister_class(SimpleOperator8)
+    bpy.utils.unregister_class(AssignUncert1)
+    bpy.utils.unregister_class(AssignUncert2)
+    bpy.utils.unregister_class(AssignUncert3)
+    bpy.utils.unregister_class(AssignUncert4)
+    bpy.utils.unregister_class(AssignUncert5)
+    bpy.utils.unregister_class(AssignUncert6)
+    bpy.utils.unregister_class(AssignUncert7)
+    bpy.utils.unregister_class(AssignUncert8)
     del bpy.types.Scene.my_tool
     bpy.utils.unregister_class(ResetColorsToDefaults)
     bpy.utils.unregister_class(ColorProperties)
@@ -955,7 +1280,11 @@ def unregister():
     bpy.utils.unregister_class(ResetRelevance)
     del bpy.types.Scene.relevance_factor
 #endregion
-    
+
+#region Remove Materials and properties
+    bpy.utils.unregister_class(RemoveMaterials)
+    bpy.utils.unregister_class(ClearCustomProperties) 
+#endregion    
       
 #region Volume
     bpy.utils.unregister_class(ApplyScaleSelection)  
@@ -972,8 +1301,13 @@ def unregister():
 #endregion
 
 
-#region Select by uncertainty
+#region utils
     bpy.utils.unregister_class(SelectByUncertainty)
+    bpy.utils.unregister_class(SelectRelevance1)
+    bpy.utils.unregister_class(SelectBigRelevance)
+    bpy.utils.unregister_class(SelectSmallRelevance)
+    bpy.utils.unregister_class(FindNonManifold)
+    bpy.utils.unregister_class(WeldVerticesSeleciton)
 #endregion
 
 #endregion
