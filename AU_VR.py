@@ -652,13 +652,7 @@ class CalculateVolume(bpy.types.Operator):
             return {'FINISHED'}
                 
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
-        
-        find_non_manifold1()
-        find_non_manifold2()
-        
-        if bpy.context.selected_objects:
-            self.report({'ERROR'}, "Some objects are not manifold, Volume calculation might give inaccurate results!")
-            
+                    
         return {'FINISHED'}
 
 
@@ -928,8 +922,12 @@ def find_non_manifold2():
 
 class FindNonManifold(bpy.types.Operator):
     bl_idname = "object.find_non_manifold"
-    bl_label = "Find non manifold"
+    bl_label = "This might take several minutes for complex models, proceede?"
     bl_description = "Select all non manifold meshes in the scene"
+    
+    def invoke(self, context, event):
+        # Passa l'evento ricevuto come parametro
+        return context.window_manager.invoke_confirm(self, event)
     
     def execute(self, context):
 
@@ -967,9 +965,13 @@ def weld_vertices_in_selected_meshes(self, context, merge_distance=0.001):
 
 class WeldVerticesSeleciton(bpy.types.Operator):
     bl_idname = "object.weld_vertices_in_selection"
-    bl_label = "Weld vertices of selected objects"
+    bl_label = "This might take several minutes for complex models, proceede?"
     bl_description = "Weld vertices in selected objects. If this doesn't work, please import or model the non-manifold meshes again"
-    
+
+    def invoke(self, context, event):
+        # Passa l'evento ricevuto come parametro
+        return context.window_manager.invoke_confirm(self, event)
+        
     def execute(self, context):
 
         weld_vertices_in_selected_meshes(self, context, merge_distance=0.001)
