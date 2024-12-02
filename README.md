@@ -1,9 +1,9 @@
-Blender plugin for uncertainty assessment of hypotetical 3D reconstruction of lost or never built architecture
+Blender plugin for uncertainty assessment of hypothetical 3D reconstruction of lost or never-built architecture
 
 [Download the plugin from here!](https://github.com/rikkarlo/Blender-Uncertainty-Calculator/releases/download/v2.3.1/AU_VR.py)
 
 
-How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to the "AU_VR.py" python script downloaded from the link above -> the plugin will appear on the sidebar in the newly created "Uncertainty" tab.
+How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to the "AU_VR.py" python script downloaded from the link above -> The plugin will appear on the sidebar in the newly created "Uncertainty" tab.
 
 <img src="https://github.com/user-attachments/assets/6e354786-3ca5-4855-a36d-bbe82779feaf" alt="install plugin" width="400" height="">
 
@@ -18,16 +18,18 @@ The following image explains the plugin tabs and buttons:
 Use the following image as an aid to assign the correct Uncertainty Level:
 <img src="https://github.com/user-attachments/assets/14ff314c-132e-4539-b206-ca6142247d37" alt="YES/NO Flow Chart" width="800" height="">
 
-This is an example of false colour view for the dissemination of the uncertainty of an hypotetical 3D reconstruction:
+This is an example of a false colour view for the dissemination of the uncertainty of a hypothetical 3D reconstruction:
 <img src="https://github.com/user-attachments/assets/0b6edead-6975-40bd-a83e-61b7f02e4e50" alt="Example of false colour view" width="400" height="">
 
 Refer to the following table for the full description of each Level of Uncertainty (Remember that each level description is also accessible directly from the plugin by hovering the mouse on each button):
-<img src="https://github.com/user-attachments/assets/1b5756ad-88ba-42d3-89b5-e38b6db0fbc5" alt="Scale of Uncertainty Levels descritions" width="700" height="">
+<img src="https://github.com/user-attachments/assets/1b5756ad-88ba-42d3-89b5-e38b6db0fbc5" alt="Scale of Uncertainty Levels descriptions" width="700" height="">
 
 The mathematical formulas used to calculate the AU_V and AU_VR are reported below:
 <img src="https://github.com/user-attachments/assets/ac0c8f2c-1316-43b7-9ea1-061d6a008e3f" alt="AUV_AUVR Formulas" width="500" height="">
 
-It is important to note that higher uncertainty in hypothetical reconstructions does not imply lower scientific value; well-documented high-uncertainty models can enhance understanding by critically integrating diverse sources and advancing scientific discourse. Nevertheless since the two formulas AU_V and AU_VR represents the extreme synthetis of the complex process of Uncertainty assessing, they have not to be considered self sufficient, but complementary to a proper documentation and visualization of the hypotetically reconstructed case study.
+The weighting for the volume might look like a limitation of this methodology, however, it is crucial because it guarantees segmentation-independent results (two models that have equal shape but are differently segmented will still give the same AU_V or AU_VR results), furthermore, it will foster better modelling practices because closed solid manifold models are reusable in more contexts (e.g. 3D printing, simulations, etc.).
+
+It is important to note that higher uncertainty in hypothetical reconstructions does not imply lower scientific value; well-documented high-uncertainty models can enhance understanding by critically integrating diverse sources and advancing scientific discourse. Nevertheless, since the two formulas AU_V and AU_VR represent the extreme synthesis of the complex process of Uncertainty assessing, they have not to be considered self-sufficient, but complementary to proper documentation and visualization of the hypothetically reconstructed case study.
  
 
 BIBLIOGRAFIC REFERENCES:
