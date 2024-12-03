@@ -5,7 +5,7 @@ bl_info = {
     "category": "Model Analysis",
     "author": "Riccardo Foschi and Chat GPT",
     "description": "Allows to calculate the average uncertainty weighted with the volume (AU_V) and the average uncertainty weighted with the volume and relevance (AU_VR) for hypothetical 3D architectural reconstruction models",
-    "version": (2, 3, 6),
+    "version": (2, 3, 7),
 }
 
 import bpy
@@ -860,10 +860,15 @@ class ApplyScaleSelection(bpy.types.Operator):
 
 #The find non manifold function does not work for objects just imported in the scene, as a workaround I run the 'find_non_manifold1' funciton twice on all objects of the scene before running the actual find_non_manifold2 function, it's a ugly workaround but it works.
 
+
+            
 def find_non_manifold1():
+    
+    def is_object_in_viewlayer(obj, view_layer):
+        return obj.name in [o.name for o in bpy.context.view_layer.objects]
 
     for obj in bpy.context.scene.objects:
-        if obj.type == 'MESH':
+        if obj.type == 'MESH' and is_object_in_viewlayer(obj, bpy.context.view_layer):
 
             bpy.context.view_layer.objects.active = obj  
             bpy.ops.object.mode_set(mode='EDIT')
@@ -878,6 +883,11 @@ def find_non_manifold1():
     
     
 def find_non_manifold2():
+
+    
+    def is_object_in_viewlayer(obj, view_layer):
+        return obj.name in [o.name for o in bpy.context.view_layer.objects]
+
     # Initialize an empty list to store objects with non-manifold edges
     non_manifold_objects = []
     
@@ -886,28 +896,28 @@ def find_non_manifold2():
 
     # Loop through all objects in the scene
     for obj in bpy.context.scene.objects:
-        if obj.type == 'MESH':  # Only work with mesh objects
-
-            bpy.context.view_layer.objects.active = obj  # Set active object to the current one
-            bpy.ops.object.mode_set(mode='EDIT')  # Enter edit mode
-            bpy.ops.mesh.select_all(action='DESELECT')
+        if obj.type == 'MESH' and is_object_in_viewlayer(obj, bpy.context.view_layer):  # Only work with mesh objects and objects in collections that are not hidden
             
-            # Switch to edge selection mode
-            bpy.context.tool_settings.mesh_select_mode = (False, True, False)
-
-            # Select all non-manifold edges
-            bpy.ops.mesh.select_non_manifold()
-
-                    
-            # Check if there are selected edges
-            selected_edges = len([e for e in obj.data.edges if e.select])  # Count selected edges
-            
-            # If there are selected edges, add the object to the list
-            if selected_edges > 1:
-                non_manifold_objects.append(obj)
+                bpy.context.view_layer.objects.active = obj  # Set active object to the current one
+                bpy.ops.object.mode_set(mode='EDIT')  # Enter edit mode
+                bpy.ops.mesh.select_all(action='DESELECT')
                 
-            # Switch back to object mode to inspect selection
-            bpy.ops.object.mode_set(mode='OBJECT')
+                # Switch to edge selection mode
+                bpy.context.tool_settings.mesh_select_mode = (False, True, False)
+
+                # Select all non-manifold edges
+                bpy.ops.mesh.select_non_manifold()
+
+                        
+                # Check if there are selected edges
+                selected_edges = len([e for e in obj.data.edges if e.select])  # Count selected edges
+                
+                # If there are selected edges, add the object to the list
+                if selected_edges > 1:
+                    non_manifold_objects.append(obj)
+                    
+                # Switch back to object mode to inspect selection
+                bpy.ops.object.mode_set(mode='OBJECT')
 
     # Now select only the objects in the list with non-manifold edges
     for obj in non_manifold_objects:
@@ -924,6 +934,8 @@ class FindNonManifold(bpy.types.Operator):
     bl_idname = "object.find_non_manifold"
     bl_label = "This might take several minutes for complex models, proceede?"
     bl_description = "Select all non manifold meshes in the scene"
+    
+
     
     def invoke(self, context, event):
         # Passa l'evento ricevuto come parametro
