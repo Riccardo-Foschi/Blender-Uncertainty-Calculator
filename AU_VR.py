@@ -5,7 +5,7 @@ bl_info = {
     "category": "Model Analysis",
     "author": "Riccardo Foschi and Chat GPT",
     "description": "Allows to calculate the average uncertainty weighted with the volume (AU_V) and the average uncertainty weighted with the volume and relevance (AU_VR) for hypothetical 3D architectural reconstruction models",
-    "version": (2, 3, 7),
+    "version": (2, 3, 8),
 }
 
 import bpy
@@ -866,25 +866,29 @@ def find_non_manifold1():
     
     def is_object_in_viewlayer(obj, view_layer):
         return obj.name in [o.name for o in bpy.context.view_layer.objects]
-
+    
+    visible_objects = [obj for obj in bpy.data.objects if obj.visible_get()]
+    
     for obj in bpy.context.scene.objects:
-        if obj.type == 'MESH' and is_object_in_viewlayer(obj, bpy.context.view_layer):
+        if obj in visible_objects:
+            if obj.type == 'MESH' and is_object_in_viewlayer(obj, bpy.context.view_layer):
 
-            bpy.context.view_layer.objects.active = obj  
-            bpy.ops.object.mode_set(mode='EDIT')
-            bpy.ops.mesh.select_all(action='DESELECT')
-            
-            bpy.context.tool_settings.mesh_select_mode = (False, True, False)
+                bpy.context.view_layer.objects.active = obj  
+                bpy.ops.object.mode_set(mode='EDIT')
+                bpy.ops.mesh.select_all(action='DESELECT')
+                
+                bpy.context.tool_settings.mesh_select_mode = (False, True, False)
 
-            bpy.ops.mesh.select_non_manifold()
-            
-            bpy.ops.object.mode_set(mode='OBJECT')
+                bpy.ops.mesh.select_non_manifold()
+                
+                bpy.ops.object.mode_set(mode='OBJECT')
     
     
     
 def find_non_manifold2():
 
-    
+    visible_objects = [obj for obj in bpy.data.objects if obj.visible_get()]
+        
     def is_object_in_viewlayer(obj, view_layer):
         return obj.name in [o.name for o in bpy.context.view_layer.objects]
 
@@ -896,28 +900,29 @@ def find_non_manifold2():
 
     # Loop through all objects in the scene
     for obj in bpy.context.scene.objects:
-        if obj.type == 'MESH' and is_object_in_viewlayer(obj, bpy.context.view_layer):  # Only work with mesh objects and objects in collections that are not hidden
-            
-                bpy.context.view_layer.objects.active = obj  # Set active object to the current one
-                bpy.ops.object.mode_set(mode='EDIT')  # Enter edit mode
-                bpy.ops.mesh.select_all(action='DESELECT')
+        if obj in visible_objects:
+            if obj.type == 'MESH' and is_object_in_viewlayer(obj, bpy.context.view_layer):  # Only work with mesh objects and objects in collections that are not hidden
                 
-                # Switch to edge selection mode
-                bpy.context.tool_settings.mesh_select_mode = (False, True, False)
-
-                # Select all non-manifold edges
-                bpy.ops.mesh.select_non_manifold()
-
-                        
-                # Check if there are selected edges
-                selected_edges = len([e for e in obj.data.edges if e.select])  # Count selected edges
-                
-                # If there are selected edges, add the object to the list
-                if selected_edges > 1:
-                    non_manifold_objects.append(obj)
+                    bpy.context.view_layer.objects.active = obj  # Set active object to the current one
+                    bpy.ops.object.mode_set(mode='EDIT')  # Enter edit mode
+                    bpy.ops.mesh.select_all(action='DESELECT')
                     
-                # Switch back to object mode to inspect selection
-                bpy.ops.object.mode_set(mode='OBJECT')
+                    # Switch to edge selection mode
+                    bpy.context.tool_settings.mesh_select_mode = (False, True, False)
+
+                    # Select all non-manifold edges
+                    bpy.ops.mesh.select_non_manifold()
+
+                            
+                    # Check if there are selected edges
+                    selected_edges = len([e for e in obj.data.edges if e.select])  # Count selected edges
+                    
+                    # If there are selected edges, add the object to the list
+                    if selected_edges > 1:
+                        non_manifold_objects.append(obj)
+                        
+                    # Switch back to object mode to inspect selection
+                    bpy.ops.object.mode_set(mode='OBJECT')
 
     # Now select only the objects in the list with non-manifold edges
     for obj in non_manifold_objects:
