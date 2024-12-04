@@ -10,7 +10,9 @@ How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to
 
 When exporting from another software pay particular attention to exporting close watertight manifold solids. If the solid meshes have unwelded vertices the volume calculation might give unexpected results (if a minor part of the edges is unwelded the volume might still be calculated correctly, but it is not guaranteed, so to avoid any error it is better to check import-export options and test various formats).
 In the following image you can see the suggested option for a fast export from McNeel Rhinoceros to Blender in glTF and Glb exchange formats.
+
 <img src="https://github.com/user-attachments/assets/a8ade583-57fb-46f3-b462-4c6bb5088957" alt="export from rhino to blender" width="600" height="">
+
 Keep in mind that the Glb and glTF formats in Rhino exports the visualization mesh which might not be a solid watertight closed manifold mesh, from empirical testing we verified that the non-manifold edges are a minor part and the result will not change, however for a more robust export-import that always guarantees to preserve manifold solids, we suggest to export and import objects in obj format layer by layer.
 
 
