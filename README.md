@@ -13,7 +13,7 @@ In the following image you can see the suggested option for a fast export from M
 
 <img src="https://github.com/user-attachments/assets/a8ade583-57fb-46f3-b462-4c6bb5088957" alt="export from rhino to blender" width="600" height="">
 
-Keep in mind that the Glb and glTF formats in Rhino exports the visualization mesh which might not be a solid watertight closed manifold mesh, from empirical testing we verified that the non-manifold edges are a minor part and the result will not change, however for a more robust export-import that always guarantees to preserve manifold solids, we suggest to export and import objects in obj format layer by layer.
+ADVANCED IMPORT EXPORT TIPS: Keep in mind that the Glb and glTF formats in Rhino export the visualization mesh which might not be a solid watertight closed manifold mesh, nevertheless from empirical testing we verified that by using the suggested settings the non-manifold edges are a minor part and the volume calculation in Blendfer will still be accurate, however for a more robust export-import that always guarantees to preserve manifold solids (given that the original objects in Rhino are closed, watertight, manifold poly-surfaces), we suggest to export and import objects in obj format layer by layer and check each layer after importing. Keep in mind that OBJ from Rhino does not store the units of measurement, and Blender uses meters, so if in Rhino the model was made in any other unit of measurement a rescaling must be performed in order to get consistent units between different software packages, remember to apply the scale after rescaling in Blender in order to achieve correct volume calculation.
 
 
 The following image explains the plugin tabs and buttons:
