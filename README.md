@@ -8,7 +8,7 @@ How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to
 <img src="https://github.com/user-attachments/assets/6e354786-3ca5-4855-a36d-bbe82779feaf" alt="install plugin" width="400" height="">
 
 
-When exporting from another software pay particular attention to exporting close watertight manifold solids. If the solid meshes have unwelded vertices the volume calculation might give unexpected results (if a minor part of the edges is unwelded the volume might still be calculated correctly, but it is not guaranteed, so to avoid any error it is better to check import-export options and test various formats).
+When exporting from another software, pay particular attention to exporting close watertight manifold solids. If the solid meshes have unwelded vertices, the volume calculation might give unexpected results (if a minor part of the edges is unwelded, the volume might still be calculated correctly, but it is not guaranteed, so to avoid any error, it is better to check import-export options and test various formats).
 In the following image you can see the suggested option for a fast export from McNeel Rhinoceros to Blender in glTF and Glb exchange formats.
 
 <img src="https://github.com/user-attachments/assets/a8ade583-57fb-46f3-b462-4c6bb5088957" alt="export from rhino to blender" width="600" height="">
@@ -31,9 +31,11 @@ Refer to the following table for the full description of each Level of Uncertain
 The mathematical formulas used to calculate the AU_V and AU_VR are reported below:
 <img src="https://github.com/user-attachments/assets/ac0c8f2c-1316-43b7-9ea1-061d6a008e3f" alt="AUV_AUVR Formulas" width="500" height="">
 
-The weighting for the volume might look like a limitation of this methodology, however, it is crucial because it guarantees segmentation-independent results (two models that have equal shape but are differently segmented will still give the same AU_V or AU_VR results), furthermore, it will foster better modelling practices because closed solid manifold models are reusable in more contexts (e.g. 3D printing, simulations, etc.).
+The AU_V formula is as user-independent as possible, while the AU_VR formula is more knowledge-oriented, due to the Relevance factor which is critically assigned by the human operator only to the most relevant elements of the 3D model. When a Relevance factor different from 1.00 is used, the resulting difference between AU_V and AU_VR can indicate at a glance if the model is more uncertain in the most relevant parts or not.
 
-It is important to note that higher uncertainty in hypothetical reconstructions does not imply lower scientific value; well-documented high-uncertainty models can enhance understanding by critically integrating diverse sources and advancing scientific discourse. Nevertheless, since the two formulas AU_V and AU_VR represent the extreme synthesis of the complex process of Uncertainty assessing, they have not to be considered self-sufficient, but complementary to proper documentation and visualization of the hypothetically reconstructed case study.
+The weighting for the volume is used to guarantee segmentation-independent results (two models that have equal shape but are differently segmented will still return the same AU_V or AU_VR results), furthermore, it will foster better modelling practices because closed solid manifold models are reusable in more contexts (e.g. 3D printing, simulations, etc.).
+
+It is important to note that higher uncertainty in hypothetical reconstructions does not imply lower scientific value; well-documented high-uncertainty models can enhance understanding by critically integrating diverse sources and advancing scientific discourse. Nevertheless, since the two formulas AU_V and AU_VR represent the extreme synthesis of the complex process of Uncertainty assessing, they cannot be considered self-sufficient, but complementary to proper documentation and visualisation of the hypothetically reconstructed case study.
  
 
 BIBLIOGRAFIC REFERENCES:
