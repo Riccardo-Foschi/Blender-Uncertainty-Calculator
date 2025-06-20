@@ -1,6 +1,7 @@
 Blender plugin for uncertainty assessment of hypothetical 3D reconstruction of lost or never-built architecture
 
-[Download the plugin from here!](https://github.com/rikkarlo/Blender-Uncertainty-Calculator/releases/download/v2.3.8/AU_VR.py)
+[Download the plugin from here!](https://github.com/rikkarlo/Blender-Uncertainty-Calculator/releases/download/v2.4.1/AU_VR.py)
+
 
 
 How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to the "AU_VR.py" python script downloaded from the link above -> The plugin will appear on the sidebar in the newly created "Uncertainty" tab.
