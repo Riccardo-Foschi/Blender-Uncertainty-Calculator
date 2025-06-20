@@ -18,7 +18,7 @@ ADVANCED IMPORT EXPORT TIPS: Keep in mind that the Glb and glTF formats in Rhino
 
 
 The following image explains the plugin tabs and buttons:
-<img src="https://github.com/user-attachments/assets/ee99f5c0-d2e1-42e5-8321-436bc8fe5541" alt="Tutorial" width="800" height="">
+<img src="https://github.com/user-attachments/assets/bdce2ce6-04c3-4363-8bc0-d289d86b5e1c" alt="Tutorial" width="800" height="">
 
 Use the following image as an aid to assign the correct Uncertainty Level:
 <img src="https://github.com/user-attachments/assets/14ff314c-132e-4539-b206-ca6142247d37" alt="YES/NO Flow Chart" width="800" height="">
