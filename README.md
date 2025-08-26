@@ -4,32 +4,20 @@ Blender plugin for uncertainty assessment of hypothetical 3D reconstruction of l
 
 
 
-Video tutorials here:
-
--[How to install the plugin](https://youtu.be/4XtIT52cLLg)
-
--[How to import and validate 3D models](https://youtu.be/XHva5CYoyiI)
-
--[How to evaluate uncertainty](https://youtu.be/fbua_LnysOw)
-
-
-
-
 How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to the "AU_VR.py" python script downloaded from the link above -> The plugin will appear on the sidebar in the newly created "Uncertainty" tab.
 
 <img src="https://github.com/user-attachments/assets/6e354786-3ca5-4855-a36d-bbe82779feaf" alt="install plugin" width="400" height="">
 
 
-When exporting from another software, pay particular attention to exporting close watertight manifold solids. If the solid meshes have unwelded vertices, the volume calculation might give unexpected results (if a minor part of the edges is unwelded, the volume might still be calculated correctly, but it is not guaranteed, so to avoid any error, it is better to check import-export options and test various formats).
-In the following image you can see the suggested option for a fast export from McNeel Rhinoceros to Blender in glTF and Glb exchange formats.
-
-<img src="https://github.com/user-attachments/assets/a8ade583-57fb-46f3-b462-4c6bb5088957" alt="export from rhino to blender" width="600" height="">
-
-ADVANCED IMPORT EXPORT TIPS: Keep in mind that the Glb and glTF formats in Rhino export the visualization mesh which might not be a solid watertight closed manifold mesh, nevertheless from empirical testing we verified that by using the suggested settings the non-manifold edges are a minor part and the volume calculation in Blender will still be accurate, however for a more robust export-import that always guarantees to preserve manifold solids (given that the original objects in Rhino are closed, watertight, manifold poly-surfaces), we suggest to export and import objects in obj format layer by layer and check each layer after importing. Keep in mind that OBJ from Rhino does not store the units of measurement, and Blender uses meters, so if in Rhino the model was made in any other unit of measurement a rescaling must be performed in order to get consistent units between different software packages, remember to apply the scale after rescaling in Blender in order to achieve correct volume calculation.
 
 
-The following image explains the plugin tabs and buttons:
-<img src="https://github.com/user-attachments/assets/bdce2ce6-04c3-4363-8bc0-d289d86b5e1c" alt="Tutorial" width="800" height="">
+
+The following image shows the plugin tabs and buttons and explains the tools for importing and proofing the 3D model:
+<img src="https://github.com/user-attachments/assets/57a7ba16-0aa1-406a-84ea-df013407819f" alt="Tutorial" width="800" height="">
+
+The following image shows the plugin tabs and buttons and explains the tools for uncertainty assessment:
+<img src="https://github.com/user-attachments/assets/1818fe78-8388-4ee5-bcb5-0beb17ed2354" alt="Tutorial" width="800" height="">
+
 
 Use the following image as an aid to assign the correct Uncertainty Level:
 <img src="https://github.com/user-attachments/assets/14ff314c-132e-4539-b206-ca6142247d37" alt="YES/NO Flow Chart" width="800" height="">
@@ -48,6 +36,19 @@ The AU_V formula is as user-independent as possible, while the AU_VR formula is 
 The weighting for the volume is used to guarantee segmentation-independent results (two models that have equal shape but are differently segmented will still return the same AU_V or AU_VR results), furthermore, it will foster better modelling practices because closed solid manifold models are reusable in more contexts (e.g. 3D printing, simulations, etc.).
 
 It is important to note that higher uncertainty in hypothetical reconstructions does not imply lower scientific value; well-documented high-uncertainty models can enhance understanding by critically integrating diverse sources and advancing scientific discourse. Nevertheless, since the two formulas AU_V and AU_VR represent the extreme synthesis of the complex process of Uncertainty assessing, they cannot be considered self-sufficient, but complementary to proper documentation and visualisation of the hypothetically reconstructed case study.
+
+
+
+
+
+ Video tutorials here: 
+
+-[How to install the plugin](https://youtu.be/4XtIT52cLLg)
+
+-[How to import and validate 3D models](https://youtu.be/XHva5CYoyiI)
+
+-[How to evaluate uncertainty](https://youtu.be/fbua_LnysOw)
+
  
 
 BIBLIOGRAFIC REFERENCES:
