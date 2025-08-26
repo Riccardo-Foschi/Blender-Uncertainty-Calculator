@@ -3,8 +3,11 @@ Blender plugin for uncertainty assessment of hypothetical 3D reconstruction of l
 [Download the plugin from here!](https://github.com/rikkarlo/Blender-Uncertainty-Calculator/releases/download/v3.8.7/AU_VR_387.zip)
 
 Video tutorials here:
+
 -[How to install the plugin](https://youtu.be/4XtIT52cLLg)
+
 -[How to import and validate 3D models](https://youtu.be/XHva5CYoyiI)
+
 -[How to evaluate uncertainty](https://youtu.be/fbua_LnysOw)
 
 
