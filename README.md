@@ -1,6 +1,6 @@
 Blender plugin for uncertainty assessment of hypothetical 3D reconstruction of lost or never-built architecture
 
-[Download the plugin from here!](https://github.com/rikkarlo/Blender-Uncertainty-Calculator/releases/download/v3.8.0/AU_VR_3-8.zip)
+[Download the plugin from here!](https://github.com/rikkarlo/Blender-Uncertainty-Calculator/releases/download/v3.8.7/AU_VR_387.zip)
 
 
 
