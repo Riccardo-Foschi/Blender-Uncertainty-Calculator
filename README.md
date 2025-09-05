@@ -42,18 +42,12 @@ It is important to note that higher uncertainty in hypothetical reconstructions 
 
 
 
- Video tutorials here: 
+ Additional resources here: 
+ 
 
--[How to install the plugin](https://youtu.be/4XtIT52cLLg)
+- [Videotorials Playlist](https://youtube.com/playlist?list=PLLmlU1B4q43scy1ThLHEWiLueoWRum8pR&si=VojWHCa3DOwLsFzG)
 
--[How to import and validate 3D models](https://youtu.be/XHva5CYoyiI)
-
--[How to evaluate uncertainty](https://youtu.be/fbua_LnysOw)
-
-
-Resources for testing the plugin:
-
-[Download 3D model of a Palladian villa from here](https://1drv.ms/f/c/a7d9a4eda8acae29/EimurKjtpNkggKch8QQAAAABrZ7ZHPGGXgH4T-5APFPMEA?e=WpPRoA)
+- [Download 3D model of a Palladian villa from here](https://1drv.ms/f/c/a7d9a4eda8acae29/EimurKjtpNkggKch8QQAAAABrZ7ZHPGGXgH4T-5APFPMEA?e=WpPRoA)
 
 BIBLIOGRAFIC REFERENCES:
 
