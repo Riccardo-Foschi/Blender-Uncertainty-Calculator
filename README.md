@@ -47,7 +47,7 @@ It is important to note that higher uncertainty in hypothetical reconstructions 
 
 - [Video tutorials Playlist here](https://youtube.com/playlist?list=PLLmlU1B4q43scy1ThLHEWiLueoWRum8pR&si=VojWHCa3DOwLsFzG)
 
-- [Download 3D model of a Palladian villa from here](https://1drv.ms/f/c/a7d9a4eda8acae29/EimurKjtpNkggKch8QQAAAABrZ7ZHPGGXgH4T-5APFPMEA?e=WpPRoA)
+- [Download 3D model of a Palladian villa from here (one OBJ for each layer)](https://1drv.ms/f/c/a7d9a4eda8acae29/EimurKjtpNkggKch8QQAAAABrZ7ZHPGGXgH4T-5APFPMEA?e=WpPRoA)
 
 BIBLIOGRAFIC REFERENCES:
 
