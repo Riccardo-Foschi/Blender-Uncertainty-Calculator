@@ -52,6 +52,7 @@ It is important to note that higher uncertainty in hypothetical reconstructions 
 
 
 Resources for testing the plugin:
+
 [Download 3D model of a Palladian villa from here](https://1drv.ms/f/c/a7d9a4eda8acae29/EimurKjtpNkggKch8QQAAAABrZ7ZHPGGXgH4T-5APFPMEA?e=WpPRoA)
 
 BIBLIOGRAFIC REFERENCES:
