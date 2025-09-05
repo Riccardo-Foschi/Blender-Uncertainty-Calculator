@@ -6,11 +6,9 @@ Blender plugin for uncertainty assessment of hypothetical 3D reconstruction of l
 [Download the Grasshopper algorithm from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/Profing_Models_900.gh)
 
 
-
 How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to the "AU_VR.py" python script downloaded from the link above -> The plugin will appear on the sidebar in the newly created "Uncertainty" tab.
 
 <img src="https://github.com/user-attachments/assets/6e354786-3ca5-4855-a36d-bbe82779feaf" alt="install plugin" width="400" height="">
-
 
 
 
@@ -52,7 +50,9 @@ It is important to note that higher uncertainty in hypothetical reconstructions 
 
 -[How to evaluate uncertainty](https://youtu.be/fbua_LnysOw)
 
- 
+
+Resources for testing the plugin:
+[Download 3D model of a Palladian villa from here](https://1drv.ms/f/c/a7d9a4eda8acae29/EimurKjtpNkggKch8QQAAAABrZ7ZHPGGXgH4T-5APFPMEA?e=WpPRoA)
 
 BIBLIOGRAFIC REFERENCES:
 
