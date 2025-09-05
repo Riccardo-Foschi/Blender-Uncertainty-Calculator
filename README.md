@@ -1,6 +1,6 @@
 Blender plugin for uncertainty assessment of hypothetical 3D reconstruction of lost or never-built architecture
 
-[Download the Blender plugin from here!](https://github.com/rikkarlo/Blender-Uncertainty-Calculator/releases/download/v3.8.7/AU_VR_387.zip)
+[Download the Blender plugin from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/releases/download/v3.9.0/AU_VR_390.zip)
 
 
 [Download the Grasshopper algorithm from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/Profing_Models_900.gh)
