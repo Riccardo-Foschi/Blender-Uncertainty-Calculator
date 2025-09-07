@@ -3,7 +3,7 @@ Blender plugin for uncertainty assessment of hypothetical 3D reconstruction of l
 [Download the Blender plugin from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/releases/download/v3.9.0/AU_VR_390.zip)
 
 
-[Download the Grasshopper algorithm for model proofing from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/AUV_AUVR_100.gh)
+[Download the Grasshopper algorithm for model proofing from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/MODEL_PROOF_100.gh)
 
 [Download the Grasshopper algorithm for Uncertainty assessment from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/AUV_AUVR_100.gh)
 
