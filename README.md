@@ -1,25 +1,17 @@
 Blender plugin for uncertainty assessment of hypothetical 3D reconstruction of lost or never-built architecture
 
 <h3 align="center">
-
+ 
 -----> [Download the Blender plugin from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/releases/download/v3.9.0/AU_VR_390.zip) <-----
 
+<sub> [Video tutorials Playlist here](https://youtube.com/playlist?list=PLLmlU1B4q43scy1ThLHEWiLueoWRum8pR&si=VojWHCa3DOwLsFzG) </sub>
+ 
 </h3>
-Additional resources for Grasshopper (Rhinoceros)
-
-[Download the Grasshopper algorithm for model proofing from here!](https://1drv.ms/u/c/a7d9a4eda8acae29/EUOLBSGiG79Phn4ulexkUUoBE1M8x9B3Z0l2mcUkzhuVRQ?e=UyH49G)
-
-[Download the Grasshopper algorithm for Uncertainty assessment from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/AUV_AUVR_100.gh)
-
-[Download the Grasshopper algorithm for exporting layers into separate OBJ files from here!](https://1drv.ms/u/c/a7d9a4eda8acae29/EZqRfvZVaHhGm95cFAvCYmIBSdXhCPUi9ISv6f-NFB1vcg?e=HzEKoY) <sub>(developed with the contribution of [Fabrizio Esposito](https://github.com/uEspy))</sub>
-
 
 
 How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to the "AU_VR.py" python script downloaded from the link above -> The plugin will appear on the sidebar in the newly created "Uncertainty" tab.
 
 <img src="https://github.com/user-attachments/assets/6e354786-3ca5-4855-a36d-bbe82779feaf" alt="install plugin" width="400" height="">
-
-
 
 
 The following image shows the plugin tabs and buttons and explains the tools for importing and proofing the 3D model:
@@ -49,16 +41,24 @@ It is important to note that higher uncertainty in hypothetical reconstructions 
 
 
 
+Download Grasshopper definitions for Rhinoceros here:
+
+- [Download the Grasshopper algorithm for model proofing from here!](https://1drv.ms/u/c/a7d9a4eda8acae29/EUOLBSGiG79Phn4ulexkUUoBE1M8x9B3Z0l2mcUkzhuVRQ?e=UyH49G)
+
+- [Download the Grasshopper algorithm for Uncertainty assessment from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/AUV_AUVR_100.gh)
+
+- [Download the Grasshopper algorithm for exporting layers into separate OBJ files from here!](https://1drv.ms/u/c/a7d9a4eda8acae29/EZqRfvZVaHhGm95cFAvCYmIBSdXhCPUi9ISv6f-NFB1vcg?e=HzEKoY) <sub>(developed with the contribution of [Fabrizio Esposito](https://github.com/uEspy))</sub>
 
 
- Additional resources here: 
- 
 
-- [Video tutorials Playlist here](https://youtube.com/playlist?list=PLLmlU1B4q43scy1ThLHEWiLueoWRum8pR&si=VojWHCa3DOwLsFzG)
+Download sample 3D models here: 
 
 - [Download 3D model of a Palladian villa from here (one OBJ for each layer)](https://1drv.ms/f/c/a7d9a4eda8acae29/EimurKjtpNkggKch8QQAAAABrZ7ZHPGGXgH4T-5APFPMEA?e=WpPRoA)
   
 - [Download Rhino scene to test the proofing grasshopper algorithm](https://1drv.ms/u/c/a7d9a4eda8acae29/Eck1KLL0jRRGtoTkv1dduzwBRF1vFXbqqdJb-zqTjMDEvg?e=xzoDW5)
+
+
+
 
 
 BIBLIOGRAFIC REFERENCES:
