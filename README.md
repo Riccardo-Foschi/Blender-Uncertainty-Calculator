@@ -53,6 +53,8 @@ Download Grasshopper definitions for Rhinoceros here:
 
 Download sample 3D models here: 
 
+- [Download 3D model of a Palladian villa from here (Rhino file)](https://1drv.ms/u/c/a7d9a4eda8acae29/IQBaTvCRzt2bTbYt-CXWRxpxAZOVcPX4fiOawm3PqBpZnN0?e=iqfneG)
+
 - [Download 3D model of a Palladian villa from here (one OBJ for each layer)](https://1drv.ms/f/c/a7d9a4eda8acae29/EimurKjtpNkggKch8QQAAAABrZ7ZHPGGXgH4T-5APFPMEA?e=WpPRoA)
   
 - [Download Rhino scene to test the proofing grasshopper algorithm](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/Test%20proofing%20scene.3dm)
