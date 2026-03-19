@@ -45,7 +45,7 @@ Download Grasshopper definitions for Rhinoceros here:
 
 - [Download the Grasshopper algorithm for model proofing from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/MODEL_PROOF.gh)
 
-- [Download the Grasshopper algorithm for Uncertainty assessment from here!](https://1drv.ms/u/c/a7d9a4eda8acae29/EUOLBSGiG79Phn4ulexkUUoBE1M8x9B3Z0l2mcUkzhuVRQ?e=5S6XSc)
+- [Download the Grasshopper algorithm for Uncertainty assessment from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/AUV_AUVR.gh)
 
 - [Download the Grasshopper algorithm for exporting layers into separate OBJ files from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/EXPORT_MULTI_OBJ.gh) <sub>(developed with the contribution of [Fabrizio Esposito](https://github.com/uEspy))</sub>
 
