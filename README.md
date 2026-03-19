@@ -41,29 +41,29 @@ It is important to note that higher uncertainty in hypothetical reconstructions 
 
 
 
-Download Grasshopper definitions for Rhinoceros here:
+Download Grasshopper algorithms for Rhinoceros here:
 
-- [Download the Grasshopper algorithm for model proofing from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/MODEL_PROOF.gh)
+- [Model proofing](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/MODEL_PROOF.gh)
 
-- [Download the Grasshopper algorithm for Uncertainty assessment from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/AUV_AUVR.gh)
+- [Uncertainty assessment](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/AUV_AUVR.gh)
 
-- [Download the Grasshopper algorithm for exporting layers into separate OBJ files from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/EXPORT_MULTI_OBJ.gh) <sub>(developed with the contribution of [Fabrizio Esposito](https://github.com/uEspy))</sub>
+- [Exporting layers into separate OBJ files](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/EXPORT_MULTI_OBJ.gh) <sub>(developed with the contribution of [Fabrizio Esposito](https://github.com/uEspy))</sub>
 
 
 
 Download sample 3D models here: 
 
-- [Download 3D model of a Palladian villa from here (Rhino file)](https://1drv.ms/u/c/a7d9a4eda8acae29/IQBaTvCRzt2bTbYt-CXWRxpxAZOVcPX4fiOawm3PqBpZnN0?e=iqfneG)
+- [Palladian villa (Rhino file)](https://1drv.ms/u/c/a7d9a4eda8acae29/IQBaTvCRzt2bTbYt-CXWRxpxAZOVcPX4fiOawm3PqBpZnN0?e=iqfneG)
 
-- [Download 3D model of a Palladian villa from here (one OBJ for each layer)](https://1drv.ms/f/c/a7d9a4eda8acae29/EimurKjtpNkggKch8QQAAAABrZ7ZHPGGXgH4T-5APFPMEA?e=WpPRoA)
+- [Palladian villa (one OBJ for each layer)](https://1drv.ms/f/c/a7d9a4eda8acae29/EimurKjtpNkggKch8QQAAAABrZ7ZHPGGXgH4T-5APFPMEA?e=WpPRoA)
   
-- [Download Rhino scene to test the proofing grasshopper algorithm](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/Test%20proofing%20scene.3dm)
+- [Rhino test scene with simple geometries with mistakes to fix](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/Test%20proofing%20scene.3dm)
 
 
 
 
 
-BIBLIOGRAFIC REFERENCES:
+BIBLIOGRAPHIC REFERENCES:
 
 - Foschi, R., Fallavollita, F., & Apollonio, F. I. (2024). Quantifying Uncertainty in Hypothetical 3D Reconstruction—A User-Independent Methodology for the Calculation of Average Uncertainty. Heritage, 7(8), 4440-4454. https://doi.org/10.3390/heritage7080209
 - Apollonio, F. I., Fallavollita, F., Foschi, R., & Smurra, R. (2024). Multi-Feature Uncertainty Analysis for Urban-Scale Hypothetical 3D Reconstructions: Piazza delle Erbe Case Study. Heritage, 7(1), 476-498. https://doi.org/10.3390/heritage7010023
