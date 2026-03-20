@@ -43,7 +43,7 @@ It is important to note that higher uncertainty in hypothetical reconstructions 
 
 Download Grasshopper algorithms for Rhinoceros here (right click -> "save link as" to download):
 
-- [Model proofing](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/Profing%20Models.3dm)
+- [Model proofing](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/MODEL_PROOF.gh)
 
 - [Uncertainty assessment](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/AUV_AUVR.gh)
 
