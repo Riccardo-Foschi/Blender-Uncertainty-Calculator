@@ -41,7 +41,7 @@ It is important to note that higher uncertainty in hypothetical reconstructions 
 
 
 
-Download Grasshopper algorithms for Rhinoceros here:
+Download Grasshopper algorithms for Rhinoceros here (right click -> "save as" to download):
 
 - [Model proofing](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/MODEL_PROOF.gh)
 
@@ -51,7 +51,7 @@ Download Grasshopper algorithms for Rhinoceros here:
 
 
 
-Download sample 3D models here (right click -> "save as" to download): 
+Download sample 3D models here: 
 
 - [Palladian villa (Rhino file)](https://1drv.ms/u/c/a7d9a4eda8acae29/IQBaTvCRzt2bTbYt-CXWRxpxAZOVcPX4fiOawm3PqBpZnN0?e=iqfneG)
 
