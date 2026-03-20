@@ -57,7 +57,9 @@ Download sample 3D models here:
 
 - [Palladian villa (one OBJ for each layer)](https://1drv.ms/f/c/a7d9a4eda8acae29/EimurKjtpNkggKch8QQAAAABrZ7ZHPGGXgH4T-5APFPMEA?e=WpPRoA)
   
-- [Rhino test scene with simple geometries with mistakes to fix](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/Test%20proofing%20scene.3dm?raw=true)
+- [Rhino test scene with simple geometries with mistakes to fix](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/Test%20proofing%20scene.3dm)
+
+- [Rhino test scene with simple geometries with mistakes to fix](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/raw/main/Test%20proofing%20scene.3dm)
 
 
 
