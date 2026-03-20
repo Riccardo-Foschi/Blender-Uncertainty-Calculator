@@ -43,11 +43,11 @@ It is important to note that higher uncertainty in hypothetical reconstructions 
 
 Download Grasshopper algorithms for Rhinoceros here:
 
-- [Model proofing](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/MODEL_PROOF.gh)
+- [Model proofing](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/raw/MODEL_PROOF.gh)
 
-- [Uncertainty assessment](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/AUV_AUVR.gh)
+- [Uncertainty assessment](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/raw/AUV_AUVR.gh)
 
-- [Exporting layers into separate OBJ files](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/EXPORT_MULTI_OBJ.gh) <sub>(developed with the contribution of [Fabrizio Esposito](https://github.com/uEspy))</sub>
+- [Exporting layers into separate OBJ files](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/raw/EXPORT_MULTI_OBJ.gh) <sub>(developed with the contribution of [Fabrizio Esposito](https://github.com/uEspy))</sub>
 
 
 
@@ -58,8 +58,6 @@ Download sample 3D models here:
 - [Palladian villa (one OBJ for each layer)](https://1drv.ms/f/c/a7d9a4eda8acae29/EimurKjtpNkggKch8QQAAAABrZ7ZHPGGXgH4T-5APFPMEA?e=WpPRoA)
   
 - [Rhino test scene with simple geometries with mistakes to fix](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/Test%20proofing%20scene.3dm)
-
-- [Rhino test scene with simple geometries with mistakes to fix](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/raw/main/Test%20proofing%20scene.3dm)
 
 
 
