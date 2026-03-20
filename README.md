@@ -47,7 +47,7 @@ Download Grasshopper algorithms for Rhinoceros here (right click -> "save link a
 
 - [Uncertainty assessment](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/AUV_AUVR.gh)
 
-- [Exporting layers into separate OBJ files](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/raw/main/EXPORT_MULTI_OBJ.gh) <sub>(developed with the contribution of [Fabrizio Esposito](https://github.com/uEspy))</sub>
+- [Exporting layers into separate OBJ files](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/blob/main/EXPORT_MULTI_OBJ.gh) <sub>(developed with the contribution of [Fabrizio Esposito](https://github.com/uEspy))</sub>
 
 
 
