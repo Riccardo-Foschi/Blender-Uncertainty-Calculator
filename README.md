@@ -14,23 +14,23 @@ How to install: Edit -> Preferences -> Add-ons -> Install from Disk -> Browse to
 <img src="https://github.com/user-attachments/assets/6e354786-3ca5-4855-a36d-bbe82779feaf" alt="install plugin" width="400" height="">
 
 
-The following image shows the plugin tabs and buttons and explains the tools for importing and proofing the 3D model:
+The following image shows the plugin tabs and buttons and explains the tools for importing and proofing the 3D model (v3.9):
 <img src="https://github.com/user-attachments/assets/57a7ba16-0aa1-406a-84ea-df013407819f" alt="Tutorial" width="800" height="">
 
-The following image shows the plugin tabs and buttons and explains the tools for uncertainty assessment:
+The following image shows the plugin tabs and buttons and explains the tools for uncertainty assessment (v3.9):
 <img src="https://github.com/user-attachments/assets/1818fe78-8388-4ee5-bcb5-0beb17ed2354" alt="Tutorial" width="800" height="">
 
 
-Use the following image as an aid to assign the correct Uncertainty Level:
+Use the following image as an aid to assign the correct Uncertainty Level (v3.9):
 <img src="https://github.com/user-attachments/assets/14ff314c-132e-4539-b206-ca6142247d37" alt="YES/NO Flow Chart" width="800" height="">
 
-This is an example of a false colour view for the dissemination of the uncertainty of a hypothetical 3D reconstruction:
+This is an example of a false colour view for the dissemination of the uncertainty of a hypothetical 3D reconstruction (v3.9):
 <img src="https://github.com/user-attachments/assets/0b6edead-6975-40bd-a83e-61b7f02e4e50" alt="Example of false colour view" width="400" height="">
 
-Refer to the following table for the full description of each Level of Uncertainty (Remember that each level description is also accessible directly from the plugin by hovering the mouse on each button):
+Refer to the following table for the full description of each Level of Uncertainty (Remember that each level description is also accessible directly from the plugin by hovering the mouse on each button) (v3.9):
 <img src="https://github.com/user-attachments/assets/1b5756ad-88ba-42d3-89b5-e38b6db0fbc5" alt="Scale of Uncertainty Levels descriptions" width="700" height="">
 
-The mathematical formulas used to calculate the AU_V and AU_VR are reported below:
+The mathematical formulas used to calculate the AU_V and AU_VR are reported below (v3.9):
 <img src="https://github.com/user-attachments/assets/ac0c8f2c-1316-43b7-9ea1-061d6a008e3f" alt="AUV_AUVR Formulas" width="500" height="">
 
 The AU_V formula is as user-independent as possible, while the AU_VR formula is more knowledge-oriented, due to the Relevance factor which is critically assigned by the human operator only to the most relevant elements of the 3D model. When a Relevance factor different from 1.00 is used, the resulting difference between AU_V and AU_VR can indicate at a glance if the model is more uncertain in the most relevant parts or not.
