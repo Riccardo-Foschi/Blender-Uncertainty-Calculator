@@ -2,7 +2,7 @@ Blender plugin for uncertainty assessment of hypothetical 3D reconstruction of l
 
 <h3 align="center">
  
------> [Download the Blender plugin (Beta) from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/releases/download/v5.0/AU_VR_500.zip) <-----
+-----> [Download the Blender plugin (Beta) from here!](https://github.com/Riccardo-Foschi/Blender-Uncertainty-Calculator/releases/download/v5.0.1/AU_VR_501.zip) <-----
 
 <sub> [Video tutorials Playlist here](https://youtube.com/playlist?list=PLLmlU1B4q43scy1ThLHEWiLueoWRum8pR&si=VojWHCa3DOwLsFzG) </sub>
  
